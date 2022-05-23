@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SzigoHelperConsole
 {
-    internal class EgyszeruProgTetelek
+    public class EgyszeruProgTetelek
     {
 
         /// <summary>
@@ -14,7 +14,7 @@ namespace SzigoHelperConsole
         /// </summary>
         /// <param name="inputArray">Bemeneti tömb</param>
         /// <returns>Összeadás eredménye</returns>
-        static int SorozatSzamitasTetel(int[] inputArray)
+        public static int SorozatSzamitasTetel(int[] inputArray)
         {
             int ertek = 0;
 
@@ -32,13 +32,15 @@ namespace SzigoHelperConsole
         /// <param name="inputArray">Vizsgált tömb</param>
         /// <param name="lambdaExpression">Lambda kifejezés</param>
         /// <returns>True: létezik adott tulajdonságú elem</returns>
-        static bool EldontesTetel(int[] inputArray, Func<int, bool> lambdaExpression)
+        public static bool EldontesTetel(int[] inputArray, Func<int, bool> lambdaExpression)
         {
             int i = 0;
+
             while (i < inputArray.Length && lambdaExpression(i))
             {
                 i++;
             }
+            
 
             bool letezik = i < inputArray.Length;
 
@@ -50,7 +52,7 @@ namespace SzigoHelperConsole
         /// </summary>
         /// <param name="lambdaExpression">lambda kifejezés</param>
         /// <returns>A keresett elem első előfordulási helye</returns>
-        static int KivalasztasTetel(Func<int, bool> lambdaExpression)
+        public static int KivalasztasTetel(Func<int, bool> lambdaExpression)
         {
             int i = 0;
             while (lambdaExpression(i))
@@ -68,7 +70,7 @@ namespace SzigoHelperConsole
         /// <param name="bemenetiTomb">Keresett érték helye</param>
         /// <param name="lambdaExpression">Lambda kifejezés</param>
         /// <returns>True + index: ha van adott tulajdonságú elem. Index (null) amennyiben nincs ilyen elem</returns>
-        static (bool, int?) LinearisKeresesTetel(int[] bemenetiTomb, Func<int, bool> lambdaExpression)
+        public static (bool, int?) LinearisKeresesTetel(int[] bemenetiTomb, Func<int, bool> lambdaExpression)
         {
 
             int i = 0;
@@ -95,12 +97,12 @@ namespace SzigoHelperConsole
         /// <param name="bemenetiTomb">Keresett elemek halmaza</param>
         /// <param name="lambdaExpression">Lambda kifejezés</param>
         /// <returns>Adott tulajdonságú elemek halmaza</returns>
-        static int MegszamlalasTetel(int[] bemenetiTomb, Func<int, bool> lambdaExpression)
+        public static int MegszamlalasTetel(int[] bemenetiTomb, Func<int, bool> lambdaExpression)
         {
             int darabSzam = 0;
-            for (int j = 0; j < bemenetiTomb.Length; j++)
+            for (int i = 0; i < bemenetiTomb.Length; i++)
             {
-                if (bemenetiTomb[j] % 2 == 0)
+                if (lambdaExpression(i))
                 {
                     darabSzam++;
                 }
@@ -109,13 +111,12 @@ namespace SzigoHelperConsole
             return darabSzam;
         }
 
-
         /// <summary>
         /// Adott egy tömb, amelyben az elemek összehasonlíthatók és megkeressük a legnagyobb elemet
         /// </summary>
         /// <param name="bemenetiTomb"></param>
         /// <returns></returns>
-        static int MaximumKivalasztas(int[] bemenetiTomb)
+        public static int MaximumKivalasztas(int[] bemenetiTomb)
         {
             int maxIndex = 0;
 
