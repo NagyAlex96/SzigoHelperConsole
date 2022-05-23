@@ -8,14 +8,12 @@ namespace SzigoHelperConsole
 {
     public class OsszetettProgTetelek
     {
-        #region Összetett programozási tételek
-
         /// <summary>
         /// Egy bemeneti tömb minden egyes elemét szeretnénk átmásolni egy y kimeneti tömbbe, vagy egy tömb minden elemének egy függvény által módosított értékét
         /// </summary>
-        /// <param name="inputArray"></param>
+        /// <param name="inputArray">Feldolgozandó tömb</param>
         /// <returns>Bementi tömb elemeinek 2x értéke</returns>
-        static int[] MasolasTetel(int[] inputArray)
+        public static int[] MasolasTetel(int[] inputArray)
         {
             int[] yKimenetiTomb = new int[inputArray.Length];
 
@@ -30,314 +28,332 @@ namespace SzigoHelperConsole
         /// <summary>
         /// Egy tömbből kiválogatjuk azon elemeket, amelyek megfelelnek a feltételnek
         /// </summary>
-        /// <param name="inputArray">Keresett elemek halmaza</param>
-        /// <param name="P">Logikai feltétel</param>
+        /// <param name="inputArray">Vizsgált tömb</param>
+        /// <param name="P">Kiválogatási feltétel</param>
         /// <returns>(Darabszám, tömb)</returns>
-        static (int, int[]) KivalogatasTetel(int[] inputArray, Func<int, bool> P)
+        public static (int, int[]) KivalogatasTetel(int[] inputArray, Func<int, bool> P)
         {
             int[] y = new int[inputArray.Length];
-            int db = -1;
+            int darab = 0;
 
             for (int i = 0; i < inputArray.Length; i++)
             {
                 if (P(i))
                 {
-                    db++;
-                    y[db] = inputArray[i];
+                    y[darab] = inputArray[i];
+                    darab++;
                 }
             }
 
-            return (db, y);
+            return (darab, y);
         }
 
         /// <summary>
-        /// Egy tömbből kiválogatjuk azon elemeket, amelyek megfelelnek a feltételnek
+        /// Egy tömbből kiválogatjuk azon elemeket, amelyek megfelelnek a feltételnek. Ezeket az eredeti tömbben adjuk vissza
         /// </summary>
-        /// <param name="bemenetiTomb">Tömb ahol az elemeket keressük</param>
-        /// <param name="kimenetiDarab">Kiválogatott elemek száma</param>
-        static void KivalogatasHelybenTetel(ref int[] bemenetiTomb, out int kimenetiDarab)
+        /// <param name="inputArray">A vizsgált tömb</param>
+        /// <param name="P">Kiválogatási feltétel</param>
+        /// <returns>A kiválogatást követően a bementi tömbben található elemek száma</returns>
+        public static int KivalogatasHelybenTetel(ref int[] inputArray, Func<int, bool> P)
         {
-            #region Magyarázat
-            /*
-             * Ha a feldolgozást követően nincs szükség az eredeti "tomb" tömbre, akkor az eredményt itt is eltárolhatjuk
-             * Ez helyben történő kiválogatásnak nevezzük.
-             * 
-             * Példa: Válogassuk ki a tömb elejére a páros elemeket! 
-             
-             */
-            #endregion
+            int darab = 0;
 
-            kimenetiDarab = 0;
-
-            for (int i = 0; i < bemenetiTomb.Length; i++)
+            for (int i = 0; i < inputArray.Length; i++)
             {
-                if (bemenetiTomb[i] % 2 == 0)
+                if (P(i))
                 {
-                    bemenetiTomb[kimenetiDarab] = bemenetiTomb[i];
-                    kimenetiDarab++;
+                    inputArray[darab] = inputArray[i];
+                    darab++;
                 }
             }
+
+            return darab;
         }
 
         /// <summary>
-        /// Egy tömbből kiválogatjuk azon elemeket, amelyek megfelelnek a feltételnek
+        /// Egy tömbből kiválogatjuk azon elemeket, amelyek megfelelnek a feltételnek. Ezek a tömb elejére kerülnek, cserével
         /// </summary>
-        /// <param name="tomb">Tömb ahol az elemeket keressük</param>
-        /// <param name="outDarab">Kiválogatott elemek száma</param>
-        static void KivalogatasHelybenCserevelTetel(ref int[] tomb, out int outDarab)
+        /// <param name="tomb">A vizsgált tömb</param>
+        /// <param name="P">Kiválogatási feltétel</param>
+        /// <returns>A kiválogatást követően a bementi tömbben található elemek száma</returns>
+        public static int KivalogatasHelybenCserevelTetel(ref int[] tomb, Func<int, bool> P)
         {
-            #region Magyarázat
-            /*
-             * Ha a feldolgozást követően nincs szükség az eredeti "tomb" tömbre, akkor az eredményt itt is eltárolhatjuk
-             * Ezt helyben történő kiválogatásnak nevezzük.
-             * 
-             * Példa: Válogassuk ki a tömb elejére a páros elemeket! 
-             
-             */
-            #endregion
-
-
-            outDarab = 0;
+            int darab = 0;
             for (int i = 0; i < tomb.Length; i++)
             {
-                if (tomb[i] % 2 == 0)
+                if (P(i))
                 {
-                    var temp = tomb[outDarab];
-                    tomb[outDarab] = tomb[i];
+                    var temp = tomb[darab];
+                    tomb[darab] = tomb[i];
                     tomb[i] = temp;
-                    outDarab++;
+                    darab++;
                 }
             }
+            return darab;
         }
 
         /// <summary>
-        /// Egy "x" méretű tömb elemeit válogatjuk két különálló tömbbe
+        /// A bemeneti tömb elemeit válogatjuk szét két különálló tömbbe
         /// </summary>
-        /// <param name="bemenetiTomb">Eredeti tömb</param>
-        /// <param name="xKimenetiTomb">Adott tulajdonsággal rendelkező elemek</param>
-        /// <param name="xDarab">Adott tulajdonsággal rendelkező elemek száma</param>
-        /// <param name="yKimenetiTomb">Adott tulajdonsággal NEM rendelkező elemek</param>
-        /// <param name="yDarab">Adott tulajdonsággal NEM rendelkező elemek száma</param>
-        static void SzetvalogatasTetel(int[] bemenetiTomb, out int[] xKimenetiTomb, out int xDarab, out int[] yKimenetiTomb, out int yDarab)
+        /// <param name="inputArray">A vizsgált tömb</param>
+        /// <param name="P">Szétválogatási feltétel</param>
+        /// <returns>(int[], int, int[], int) Y1 tömb, db1, Y2 tömb, db2</returns>
+        public static (int[], int, int[], int) SzetvalogatasTetel(int[] inputArray, Func<int, bool> P)
         {
-            #region Magyarázat
-            /*
-             * Egy "x" elemű tömb elemeit válogatjuk ki bizonyos szempont szerint két tömbbe. Az "xKimenet"-i tömb-be kerülnek az adott tulajdonsággal rendelkező elemek, míg a "yKimenet"-i tömbbe, amellyeknek más a tulajdonsága.
-             * Mivel nem tudjuk, hogy hány elemet szeretnénk "xKimenet"-i tömbbe másolni, ezért lefoglaljuk neki a lehető legnagyobb helyet. Az "yKimenet"-i tömb esetén ugyanígy járunk el.
-             * Tudnunk kell, hogy mennyi elemet másoltunk a "yKimenet"-i és az "xKimenet"-i tömbbe. Ezt jelöli az "xDarab" és az "yDarab"
-             * 
-             * Megvalósítás: Bejárjuk a bemeneti
-             * 
-             * Példa: Válogassuk szét a páros és páratlan elemeket. A páratlanok kerüljenek "xKimenet"-i tömbbe, a párosok "yKimenet"-i tömbbe
-             
-             */
-            #endregion
+            int darab1 = 0;
+            int[] y1 = new int[inputArray.Length];
 
-            xDarab = 0;
-            xKimenetiTomb = new int[bemenetiTomb.Length];
+            int[] y2 = new int[inputArray.Length];
+            int darab2 = 0;
 
-            yKimenetiTomb = new int[bemenetiTomb.Length];
-            yDarab = 0;
-
-            for (int i = 0; i < bemenetiTomb.Length; i++)
+            for (int i = 0; i < inputArray.Length; i++)
             {
-                if (bemenetiTomb[i] % 2 == 1)
+                if (P(i))
                 {
-                    xKimenetiTomb[xDarab] = bemenetiTomb[i];
-                    xDarab++;
+                    y1[darab1] = inputArray[i];
+                    darab1++;
                 }
                 else
                 {
-                    yKimenetiTomb[yDarab] = bemenetiTomb[i];
-                    yDarab++;
+                    y2[darab2] = inputArray[i];
+                    darab2++;
                 }
             }
 
-
+            return (y1, darab1, y2, darab2);
         }
 
-        static void SzetvalogatasEgyTombben(int[] tomb, out int tombElejeDarab, out int tombVegeDarab, out int[] yTombKimenet)
+        /// <summary>
+        /// A bemeneti tömb elemeit válogatjuk szét egy tömbbe
+        /// </summary>
+        /// <param name="inputArray">A vizsgált tömb</param>
+        /// <param name="P">Szétválogatási feltétel</param>
+        /// <returns>(int[], int, int[], int) Y1 tömb, db1</returns>
+        public static (int[], int) SzetvalogatasEgyTombben(int[] inputArray, Func<int, bool> P)
         {
-            yTombKimenet = new int[tomb.Length];
-            tombVegeDarab = tomb.Length - 1;
-            tombElejeDarab = 0;
-            for (int i = 0; i < tomb.Length; i++)
+            int[] y = new int[inputArray.Length];
+            int jobb = inputArray.Length - 1;
+            int darab = 0;
+
+            for (int i = 0; i < inputArray.Length; i++)
             {
-                if (tomb[i] % 2 == 0)
+                if (P(i))
                 {
-                    yTombKimenet[tombElejeDarab] = tomb[i];
-                    tombElejeDarab++;
+                    y[darab] = inputArray[i];
+                    darab++;
                 }
                 else
                 {
-                    yTombKimenet[tombVegeDarab] = tomb[i];
-                    tombVegeDarab--;
+                    y[jobb] = inputArray[i];
+                    jobb--;
                 }
             }
+
+            return (y, darab);
         }
 
-        static void SzetvalogatasHelybenCsereNelkul(ref int[] tomb, out int outDarab)
+        /// <summary>
+        /// A szétválogatás memória helyfoglalás szempontjából leghatékonyabb megoldása az, amikor az eredeti tömbön belül végezzük el.
+        /// </summary>
+        /// <param name="inputArray">Feldolgozandó tömb</param>
+        /// <param name="P">Logikai értéku tulajdonság függvény</param>
+        /// <returns>A P tulajdonságú elemek száma a tömbben</returns>
+        public static int SzetvalogatasHelybenCsereNelkul(ref int[] inputArray, Func<int, bool> P)
         {
 
             int bal = 0;
-            int jobb = tomb.Length - 1;
-            int seged = tomb[0];
+            int jobb = inputArray.Length - 1;
+            int seged = inputArray[0];
 
             while (bal < jobb)
             {
-                while (bal < jobb && (tomb[jobb] % 2 != 0))
+                while (bal < jobb && !P(jobb))
                 {
-                    jobb--; //jobb=jobb-1
+                    jobb--;
                 }
                 if (bal < jobb)
                 {
-                    tomb[bal] = tomb[jobb];
+                    inputArray[bal] = inputArray[jobb];
                     bal++;
-                    while (bal < jobb && (tomb[bal] % 2 == 0))
+                    while (bal < jobb && P(bal))
                     {
                         bal++;
                     }
                     if (bal < jobb)
                     {
-                        tomb[jobb] = tomb[bal];
+                        inputArray[jobb] = inputArray[bal];
                         jobb--;
                     }
 
                 }
             }
 
-            tomb[bal] = seged;
+            inputArray[bal] = seged;
+            int darab = 0;
 
-            if (tomb[bal] % 2 == 0)
+            if (P(bal))
             {
-                outDarab = bal + 1;
+                darab = bal + 1;
             }
             else
             {
-                outDarab = bal;
+                darab = bal;
             }
+
+            return darab;
         }
 
-        static void MetszetTetel(int[] xBemenetiTomb, int[] yBemenetiTomb, out int[] kimenetiTomb, out int kimenetiDarab)
+        /// <summary>
+        /// Két tömbből a közös elemeket kiválogatjuk egy harmadik tömbbe
+        /// </summary>
+        /// <param name="inputArrayA">Egyik bemeneti tömb</param>
+        /// <param name="inputArrayB">Másik bemeneti tömb</param>
+        /// <returns>(int[], int) (Kimeneti tömb, releváns elemek száma)</returns>
+        public static (int[], int) MetszetTetel(int[] inputArrayA, int[] inputArrayB)
         {
-            kimenetiTomb = new int[xBemenetiTomb.Length];
-            kimenetiDarab = 0;
+            int[] y = new int[inputArrayA.Length];
+            int darab = 0;
 
-            for (int i = 0; i < kimenetiTomb.Length; i++)
+            for (int i = 0; i < y.Length; i++)
             {
                 int j = 0;
 
-                while (j < yBemenetiTomb.Length && xBemenetiTomb[i] != yBemenetiTomb[j])
+                while (j < inputArrayB.Length && inputArrayA[i] != inputArrayB[j])
                 {
                     j++;
                 }
 
-                if (j < yBemenetiTomb.Length)
+                if (j < inputArrayB.Length)
                 {
-                    kimenetiTomb[kimenetiDarab] = xBemenetiTomb[i];
-                    kimenetiDarab++;
+                    y[darab] = inputArrayA[i];
+                    darab++;
                 }
             }
+
+            return (y, darab);
         }
 
-        static void MetszetKozosElemVizsalataTetel(int[] xBemenetiTomb, int[] yBemenetiTomb, out bool vanKozosElem)
+        /// <summary>
+        /// Két tömbben van-e közös elem
+        /// </summary>
+        /// <param name="inputArrayA">Egyik bemeneti tömb</param>
+        /// <param name="inputArrayB">Másik bemeneti tömb</param>
+        /// <returns>True: van közös elem</returns>
+        public static bool MetszetKozosElemVizsalataTetel(int[] inputArrayA, int[] inputArrayB)
         {
-            vanKozosElem = false;
+            bool van = false;
             int i = 0;
 
-            while (i < xBemenetiTomb.Length && !vanKozosElem)
+            while (i < inputArrayA.Length && !van)
             {
 
                 int j = 0;
 
-                while (j < yBemenetiTomb.Length && xBemenetiTomb[i] != yBemenetiTomb[j])
+                while (j < inputArrayB.Length && inputArrayA[i] != inputArrayB[j])
                 {
                     j++;
                 }
 
-                if (j < yBemenetiTomb.Length)
+                if (j < inputArrayB.Length)
                 {
-                    vanKozosElem = true;
+                    van = true;
                 }
                 else
                 {
                     i++;
                 }
             }
+            return van;
         }
 
-        static void UnioTetel(int[] x1BemenetiTomb, int[] x2BemenetiTomb, out int darab, out int[] yKimenetiTomb)
+        /// <summary>
+        /// Két tömbből ki akarjuk válogatni az összes eloforduló elemet, tehát azokat, amik akár az egyikben, akár a másikban benne vannak
+        /// </summary>
+        /// <param name="inputArrayA">Egyik bemeneti tömb</param>
+        /// <param name="inputArrayB">Másik bemeneti tömb</param>
+        /// <returns>(int[], int) (Kimeneti tömb, releváns elemek száma)</returns>
+        public static (int[], int) UnioTetel(int[] inputArrayA, int[] inputArrayB)
         {
-            int kimenetiMeret = x1BemenetiTomb.Length + x2BemenetiTomb.Length;
-            yKimenetiTomb = new int[kimenetiMeret];
+            int[] y = new int[inputArrayA.Length + inputArrayB.Length];
 
-            for (int i = 0; i < x1BemenetiTomb.Length; i++)
+            for (int i = 0; i < inputArrayA.Length; i++)
             {
-                yKimenetiTomb[i] = x1BemenetiTomb[i];
+                y[i] = inputArrayA[i];
             }
 
-            darab = x1BemenetiTomb.Length;
+            int darab = inputArrayA.Length;
 
-            for (int j = 0; j < x2BemenetiTomb.Length; j++)
+            for (int j = 0; j < inputArrayB.Length; j++)
             {
                 int i = 0;
-                while (i < x1BemenetiTomb.Length && x1BemenetiTomb[i] != x2BemenetiTomb[j])
+                while (i < inputArrayA.Length && inputArrayA[i] != inputArrayB[j])
                 {
                     i++;
                 }
-                if (i >= x1BemenetiTomb.Length)
+                if (i >= inputArrayA.Length)
                 {
-                    yKimenetiTomb[darab] = x2BemenetiTomb[j];
+                    y[darab] = inputArrayB[j];
                     darab++;
                 }
             }
+            return (y, darab);
         }
 
-        static void IsmetlodesekKiszureseTetel(ref int[] x1BemenetiTomb, out int darab)
+        /// <summary>
+        /// Egy tömbből kiszűri az ismétlődéseket
+        /// </summary>
+        /// <param name="inputArray">Tömb, melyet az algoritmus úgy alakít, hogy az ismétlődő elemekből pontosan egy maradjon</param>
+        /// <returns>Az tömbben az átalakítást követően megmaradó elemek száma</returns>
+        public static int IsmetlodesekKiszureseTetel(ref int[] inputArray)
         {
-            darab = 1;
+            int darab = 1;
 
-            for (int i = 1; i < x1BemenetiTomb.Length; i++)
+            for (int i = 1; i < inputArray.Length; i++)
             {
                 int j = 0;
-                while (j <= darab && x1BemenetiTomb[i] != x1BemenetiTomb[j])
+                while (j <= darab && inputArray[i] != inputArray[j])
                 {
                     j++;
                 }
                 if (j >= darab)
                 {
-                    x1BemenetiTomb[darab] = x1BemenetiTomb[i];
+                    inputArray[darab] = inputArray[i];
                     darab++;
                 }
             }
+            return darab;
         }
 
-        static void OsszeFuttatasTetel(int[] x1BemenetiTomb, int[] x2BemenetiTomb, out int[] yKimenetiTomb, out int darab)
+        /// <summary>
+        /// Ugyan azt csinálja, mint az unió tétel, viszont két rendezett tömbből, megpróbálja kiszűrni az ismétlődéseket
+        /// </summary>
+        /// <param name="inputArrayA">Egyik rendezett bemeneti tömb</param>
+        /// <param name="inputArrayB">Másik rendezett bemeneti tömb</param>
+        /// <returns>(int[], int)  (rendezett kimeneti tömb, releváns elemek száma)</returns>
+        public static (int[], int) OsszeFuttatasTetel(int[] inputArrayA, int[] inputArrayB)
         {
-            int kimenetiTombMeret = x1BemenetiTomb.Length + x2BemenetiTomb.Length;
-
-            yKimenetiTomb = new int[kimenetiTombMeret];
+            int[] y = new int[inputArrayA.Length + inputArrayB.Length];
             int i = 0;
             int j = 0;
-            darab = 0;
+            int darab = 0;
 
-            while (i < x1BemenetiTomb.Length && j < x2BemenetiTomb.Length)
+            while (i < inputArrayA.Length && j < inputArrayB.Length)
             {
-                if (x1BemenetiTomb[i] < x2BemenetiTomb[j])
+                if (inputArrayA[i] < inputArrayB[j])
                 {
-                    yKimenetiTomb[darab] = x1BemenetiTomb[i];
+                    y[darab] = inputArrayA[i];
                     i++;
                 }
                 else
                 {
-                    if (x1BemenetiTomb[i] > x2BemenetiTomb[j])
+                    if (inputArrayA[i] > inputArrayB[j])
                     {
-                        yKimenetiTomb[darab] = x2BemenetiTomb[j];
+                        y[darab] = inputArrayB[j];
                         j++;
                     }
                     else
                     {
-                        yKimenetiTomb[darab] = x1BemenetiTomb[i];
+                        y[darab] = inputArrayA[i];
                         i++;
                         j++;
                     }
@@ -345,63 +361,66 @@ namespace SzigoHelperConsole
                 darab++;
             }
 
-            while (i < x1BemenetiTomb.Length)
+            while (i < inputArrayA.Length)
             {
-                yKimenetiTomb[darab] = x1BemenetiTomb[i];
+                y[darab] = inputArrayA[i];
                 i++;
                 darab++;
             }
 
-            while (j < x2BemenetiTomb.Length)
+            while (j < inputArrayB.Length)
             {
-                yKimenetiTomb[darab] = x2BemenetiTomb[j];
+                y[darab] = inputArrayB[j];
                 j++;
                 darab++;
             }
+
+            return (y, darab);
         }
 
-        static void ModositottOsszeFuttatasTetel(int[] x1BemenetiTomb, int[] x2BemenetiTomb, out int[] yKimenetiTomb, out int darab)
+        /// <summary>
+        /// Ugyan azt csinálja, mint az unió tétel, viszont két rendezett tömbből, megpróbálja kiszűrni az ismétlődéseket. A tömb végére beszúrt végtelennek köszönhetően az algoritmus egyszerűbb lesz
+        /// </summary>
+        /// <param name="inputArrayA">Egyik rendezett bemeneti tömb</param>
+        /// <param name="inputArrayB">Másik rendezett bemeneti tömb</param>
+        /// <returns>(int[], int)  (rendezett kimeneti tömb, releváns elemek száma)</returns>
+        public static (int[], int) ModositottOsszeFuttatasTetel(int[] inputArrayA, int[] inputArrayB)
         {
-            int kimenetiTombMeret = x1BemenetiTomb.Length + x2BemenetiTomb.Length;
-            yKimenetiTomb = new int[kimenetiTombMeret];
+            int[] yKimenetiTomb = new int[inputArrayA.Length + inputArrayB.Length];
 
-            Array.Resize<int>(ref x1BemenetiTomb, x1BemenetiTomb.Length + 1);
-            Array.Resize<int>(ref x2BemenetiTomb, x2BemenetiTomb.Length + 1); //ez a két sor csak azért szükséges, hogy a végtelen-t el tudjuk tárolnis
+            Array.Resize<int>(ref inputArrayA, inputArrayA.Length + 1);
+            Array.Resize<int>(ref inputArrayB, inputArrayB.Length + 1); //ez a két sor csak azért szükséges, hogy a végtelen-t el tudjuk tárolni
 
-            x1BemenetiTomb[x1BemenetiTomb.Length - 1] = int.MaxValue;
-            x2BemenetiTomb[x2BemenetiTomb.Length - 1] = int.MaxValue;
+            inputArrayA[inputArrayA.Length - 1] = int.MaxValue;
+            inputArrayB[inputArrayB.Length - 1] = int.MaxValue;
 
             int i = 0;
             int j = 0;
-            darab = 0;
+            int darab = 0;
 
-            while (i < x1BemenetiTomb.Length - 1 || j < x2BemenetiTomb.Length - 1)
+            while (i < inputArrayA.Length - 1 || j < inputArrayB.Length - 1)
             {
-                if (x1BemenetiTomb[i] < x2BemenetiTomb[j])
+                if (inputArrayA[i] < inputArrayB[j])
                 {
-                    yKimenetiTomb[darab] = x1BemenetiTomb[i];
+                    yKimenetiTomb[darab] = inputArrayA[i];
                     i++;
                 }
-                else if (x1BemenetiTomb[i] > x2BemenetiTomb[j])
+                else if (inputArrayA[i] > inputArrayB[j])
                 {
-                    yKimenetiTomb[darab] = x2BemenetiTomb[j];
+                    yKimenetiTomb[darab] = inputArrayB[j];
                     j++;
                 }
                 else
                 {
-                    yKimenetiTomb[darab] = x1BemenetiTomb[i];
+                    yKimenetiTomb[darab] = inputArrayA[i];
                     i++;
                     j++;
                 }
                 darab++;
             }
 
+            return (yKimenetiTomb, darab);
         }
-
-        #endregion
-
-
-
 
     }
 }
