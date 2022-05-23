@@ -24,7 +24,7 @@ namespace SzigoHelperConsole
             }
         }
 
-        public static void MinimumCseresRendezesTelelt(ref int[] tomb)
+        public static void MinimumKivalasztasosRendezesTelelt(ref int[] tomb)
         {
             int db = 0;
             for (int i = 0; i < tomb.Length - 1; i++)
