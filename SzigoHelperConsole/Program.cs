@@ -21,7 +21,6 @@ namespace SzigoHelperConsole
             int[] tombA = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             int[] tombB = { 1, 2, 8, 9, 10, 11, 12 };
 
-            var (a,b) = OsszetettProgTetelek.ModositottOsszeFuttatasTetel(tombA, tombB);
 
 
 

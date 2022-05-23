@@ -185,7 +185,7 @@ namespace SzigoHelperConsole
             {
                 if (P(i))
                 {
-                    y[darab] = inputArray[i];
+                    y[darab] = inputArray[i] * inputArray[i];
                     darab++;
                 }
             }
