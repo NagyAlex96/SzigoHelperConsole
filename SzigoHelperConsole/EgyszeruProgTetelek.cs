@@ -12,8 +12,8 @@ namespace SzigoHelperConsole
         /// <summary>
         /// Egy tömb összes eleme között elvégez egy műveletet. Jelenleg összeadást
         /// </summary>
-        /// <param name="inputArray">Bemeneti tömb</param>
-        /// <returns>Összeadás eredménye</returns>
+        /// <param name="inputArray">Vizsgált tömb</param>
+        /// <returns>Az adott műveletnek (+) a tömb összes elemére történő alkalmazását követően előálló eredmény</returns>
         public static int SorozatSzamitasTetel(int[] inputArray)
         {
             int ertek = 0;
@@ -30,32 +30,33 @@ namespace SzigoHelperConsole
         /// El akarjuk dönteni, hogy egy tömbben van-e legaláabb egy adott tulajdonságú elem
         /// </summary>
         /// <param name="inputArray">Vizsgált tömb</param>
-        /// <param name="lambdaExpression">Lambda kifejezés</param>
-        /// <returns>True: létezik adott tulajdonságú elem</returns>
-        public static bool EldontesTetel(int[] inputArray, Func<int, bool> lambdaExpression)
+        /// <param name="P">Tulajdonság függvény, amely minden T típusú érték esetén igaz vagy hamis értéket ad vissza</param>
+        /// <returns>True: ha van P tulajdonságú elem a tömbben</returns>
+        public static bool EldontesTetel(int[] inputArray, Func<int, bool> P)
         {
             int i = 0;
-
-            while (i < inputArray.Length && lambdaExpression(i))
+            
+            while (i < inputArray.Length && !P(i))
             {
                 i++;
             }
             
 
-            bool letezik = i < inputArray.Length;
+            bool van = i < inputArray.Length;
 
-            return letezik;
+            return van;
         }
 
         /// <summary>
         /// Feltételezzük, hogy a tömbben egy adott elem mindenképpen előfordul
         /// </summary>
-        /// <param name="lambdaExpression">lambda kifejezés</param>
-        /// <returns>A keresett elem első előfordulási helye</returns>
-        public static int KivalasztasTetel(Func<int, bool> lambdaExpression)
+        /// <param name="inputArray">Vizsgált tömb</param>
+        /// <param name="P">Tulajdonság függvény, amely minden T típusú érték esetén igaz vagy hamis értéket ad vissza</param>
+        /// <returns>Az első P tulajdonságú tömbelem indexe</returns>
+        public static int KivalasztasTetel(int[] inputArray,Func<int, bool> P)
         {
             int i = 0;
-            while (lambdaExpression(i))
+            while (!P(i))
             {
                 i++;
             }
@@ -65,44 +66,44 @@ namespace SzigoHelperConsole
         }
 
         /// <summary>
-        /// Megnézi, hogy van-e adott tulajdonsággal rendelező elem a tömbben.
+        /// Egy tömbben van-e valamilyen tulajdonságú elem, és ha van, akkor hol található az első ilyen.
         /// </summary>
-        /// <param name="bemenetiTomb">Keresett érték helye</param>
-        /// <param name="lambdaExpression">Lambda kifejezés</param>
+        /// <param name="inputArray">Vizsgált tömb</param>
+        /// <param name="P">Az első P tulajdonságú tömbelem indexe</param>
         /// <returns>True + index: ha van adott tulajdonságú elem. Index (null) amennyiben nincs ilyen elem</returns>
-        public static (bool, int?) LinearisKeresesTetel(int[] bemenetiTomb, Func<int, bool> lambdaExpression)
+        public static (bool, int?) LinearisKeresesTetel(int[] inputArray, Func<int, bool> P)
         {
 
             int i = 0;
-            while (i < bemenetiTomb.Length && lambdaExpression(i))
+            while (i < inputArray.Length && !P(i))
             {
                 i++;
             }
 
-            bool letezik = i < bemenetiTomb.Length;
-            if(letezik)
+            bool van = i < inputArray.Length;
+            if(van)
             {
                 int index = i;
-                return (letezik, i);
+                return (van, i);
             }
             else
             {
-                return (letezik, null);
+                return (van, null);
             }
         }
 
         /// <summary>
         /// Egy tömbben szeretnénk adott tulajdonságú elemek számát meghatározni
         /// </summary>
-        /// <param name="bemenetiTomb">Keresett elemek halmaza</param>
-        /// <param name="lambdaExpression">Lambda kifejezés</param>
-        /// <returns>Adott tulajdonságú elemek halmaza</returns>
-        public static int MegszamlalasTetel(int[] bemenetiTomb, Func<int, bool> lambdaExpression)
+        /// <param name="inputArray">Feldolgozandó tömb</param>
+        /// <param name="P">Keresési feltétel</param>
+        /// <returns>P tulajdonságú elemek darabszáma</returns>
+        public static int MegszamlalasTetel(int[] inputArray, Func<int, bool> P)
         {
             int darabSzam = 0;
-            for (int i = 0; i < bemenetiTomb.Length; i++)
+            for (int i = 0; i < inputArray.Length; i++)
             {
-                if (lambdaExpression(i))
+                if (P(i))
                 {
                     darabSzam++;
                 }
@@ -114,15 +115,15 @@ namespace SzigoHelperConsole
         /// <summary>
         /// Adott egy tömb, amelyben az elemek összehasonlíthatók és megkeressük a legnagyobb elemet
         /// </summary>
-        /// <param name="bemenetiTomb"></param>
-        /// <returns></returns>
-        public static int MaximumKivalasztas(int[] bemenetiTomb)
+        /// <param name="inputArray">Legalább 1 elemu tömb, melyben a legnagyobb elemet keressük</param>
+        /// <returns>Legnagyobb értékű elem indexe</returns>
+        public static int MaximumKivalasztas(int[] inputArray)
         {
             int maxIndex = 0;
 
-            for (int i = 1; i < bemenetiTomb.Length; i++)
+            for (int i = 1; i < inputArray.Length; i++)
             {
-                if (bemenetiTomb[maxIndex] < bemenetiTomb[i]) // relációs jel megfordításával minimumkiválasztás érhető el
+                if (inputArray[maxIndex] < inputArray[i]) // relációs jel megfordításával minimumkiválasztás érhető el
                 {
                     maxIndex = i;
                 }
@@ -130,8 +131,6 @@ namespace SzigoHelperConsole
 
             return maxIndex;
         }
-
-
     }
 
 }

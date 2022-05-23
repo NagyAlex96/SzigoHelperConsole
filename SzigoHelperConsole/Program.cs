@@ -6,19 +6,24 @@ namespace SzigoHelperConsole
     {
         static void Main(string[] args)
         {
-            int[] tomb = { 1, 2, 3, 4, 9, 8, 7, 6, 5 };
+            #region Segítség a Turple-höz és a lambdához
+            //int[] tomb = { 1, 2, 3, 4, 9, 8, 7, 6, 5, 10 };
 
-            bool van = false;
-            int? index = null;
-            (van, index) = EgyszeruProgTetelek.LinearisKeresesTetel(tomb, x => tomb[x] % 7 != 0);
+            //bool van = false;
+            //int? index = null;
 
-            Console.WriteLine($"Van ilyen elem: {van}\n Keresett eleme indexe: {index}");
+            //(van, index) = EgyszeruProgTetelek.LinearisKeresesTetel(tomb, labda => tomb[labda] % 9 == 0); //fontos az igaz állítás, mivel a feltétel !P(x[i]) 
+            //Console.WriteLine($"Van ilyen elem: {van}\nKeresett eleme indexe: {index}");
 
-
-
-
+            #endregion
 
 
+            int[] tomb = { 1, 2, 3, 4, 9, 8, 7, 6, 5, 10 };
+
+            var a = EgyszeruProgTetelek.MaximumKivalasztas(tomb);
+
+
+            Console.WriteLine(a);
 
 
 
