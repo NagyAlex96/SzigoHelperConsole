@@ -390,6 +390,7 @@ namespace SzigoHelperConsole
 
             Array.Resize<int>(ref inputArrayA, inputArrayA.Length + 1);
             Array.Resize<int>(ref inputArrayB, inputArrayB.Length + 1); //ez a két sor csak azért szükséges, hogy a végtelen-t el tudjuk tárolni
+            //listával nyilván egyszerűbb
 
             inputArrayA[inputArrayA.Length - 1] = int.MaxValue;
             inputArrayB[inputArrayB.Length - 1] = int.MaxValue;
