@@ -81,10 +81,11 @@ namespace SzigoHelperConsole
         /// <returns>(bool, int) (létezik az adott elem, melyik indexen található)</returns>
         public static (bool, int?) LogaritmikusKeresesIterativanTetel(int[] inputArray, int ertek)
         {
-            int bal = 0, jobb = inputArray.Length;
+            int bal = 0;
+            int jobb = inputArray.Length - 1;
             int center = (bal + jobb) / 2;
 
-            while (bal < jobb && inputArray[center] != ertek)
+            while (bal <= jobb && inputArray[center] != ertek)
             {
                 if (inputArray[center] > ertek)
                 {
@@ -97,7 +98,7 @@ namespace SzigoHelperConsole
                 center = (bal + jobb) / 2;
             }
 
-            bool van = (bal < jobb);
+            bool van = (bal <= jobb);
 
             if (van)
             {
@@ -119,10 +120,10 @@ namespace SzigoHelperConsole
         public static bool EldontesTetel(int[] inputArray, int ertek)
         {
             int bal = 0;
-            int jobb = inputArray.Length;
+            int jobb = inputArray.Length - 1;
             int center = (bal + jobb) / 2;
 
-            while (bal < jobb && inputArray[center] != ertek)
+            while (bal <= jobb && inputArray[center] != ertek)
             {
                 if (inputArray[center] > ertek)
                 {
@@ -135,7 +136,7 @@ namespace SzigoHelperConsole
                 center = (bal + jobb) / 2;
             }
 
-            bool van = bal < jobb;
+            bool van = (bal <= jobb);
             return van;
         }
 
@@ -148,11 +149,12 @@ namespace SzigoHelperConsole
         /// <returns>True: amennyiben megtalálható a tömbben a keresett elem</returns>
         public static bool ModositottEldontesTetel(int[] inputArray, int alsoHatar, int felsoHatar)
         {
-            int bal = 0, jobb = inputArray.Length;
+            int bal = 0;
+            int jobb = inputArray.Length - 1;
 
             int center = (bal + jobb) / 2;
 
-            while (bal < jobb && !(alsoHatar <= inputArray[center] && inputArray[center] <= felsoHatar))
+            while (bal <= jobb && !(alsoHatar <= inputArray[center] && inputArray[center] <= felsoHatar))
             {
                 if (inputArray[center] > felsoHatar)
                 {
@@ -165,7 +167,7 @@ namespace SzigoHelperConsole
                 center = (bal + jobb) / 2;
             }
 
-            bool van = bal < jobb;
+            bool van = bal <= jobb;
 
             return van;
         }
@@ -208,10 +210,10 @@ namespace SzigoHelperConsole
         public static (bool, int?, int?) KivalogatasTetel(int[] inputArray, int ertek)
         {
             int bal = 0;
-            int jobb = inputArray.Length;
+            int jobb = inputArray.Length - 1;
             int center = (bal + jobb) / 2;
 
-            while (bal < jobb && inputArray[center] != ertek)
+            while (bal <= jobb && inputArray[center] != ertek)
             {
                 if (inputArray[center] > ertek)
                 {
@@ -224,7 +226,7 @@ namespace SzigoHelperConsole
                 center = (bal + jobb) / 2;
             }
 
-            bool van = (bal < jobb);
+            bool van = (bal <= jobb);
 
             if (van)
             {
@@ -236,7 +238,7 @@ namespace SzigoHelperConsole
                 }
                 jobb = center;
 
-                while (jobb < inputArray.Length && inputArray[jobb + 1] == ertek)
+                while (jobb < inputArray.Length - 1 && inputArray[jobb + 1] == ertek)
                 {
                     jobb++;
                 }
@@ -259,11 +261,11 @@ namespace SzigoHelperConsole
         public static (bool, int?, int?) ModositottKivalogatasTetel(int[] inputArray, int alsoHatar, int felsoHatar)
         {
             int bal = 0;
-            int jobb = inputArray.Length;
+            int jobb = inputArray.Length - 1;
 
             int center = (bal + jobb) / 2;
 
-            while (bal < jobb && !(alsoHatar <= inputArray[center] && inputArray[center] <= felsoHatar))
+            while (bal <= jobb && !(alsoHatar <= inputArray[center] && inputArray[center] <= felsoHatar))
             {
                 if (inputArray[center] > felsoHatar)
                 {
@@ -276,7 +278,7 @@ namespace SzigoHelperConsole
                 center = (bal + jobb) / 2;
             }
 
-            bool van = bal < jobb;
+            bool van = (bal <= jobb);
 
             if (van)
             {
@@ -294,11 +296,11 @@ namespace SzigoHelperConsole
                     jobb++;
                 }
 
-                return (bal < jobb, bal, jobb);
+                return (van, bal, jobb);
             }
             else
             {
-                return (bal < jobb, null, null);
+                return (van, null, null);
             }
 
         }
@@ -312,10 +314,10 @@ namespace SzigoHelperConsole
         public static int MegszamlalasTetel(int[] inputArray, int ertek)
         {
             int bal = 0;
-            int jobb = inputArray.Length;
+            int jobb = inputArray.Length-1;
             int center = (bal + jobb) / 2;
 
-            while (bal < jobb && inputArray[center] != ertek)
+            while (bal <= jobb && inputArray[center] != ertek)
             {
                 if (inputArray[center] > ertek)
                 {
@@ -328,7 +330,7 @@ namespace SzigoHelperConsole
                 center = (bal + jobb) / 2;
             }
 
-            bool van = (bal < jobb);
+            bool van = (bal <= jobb);
 
             if (van)
             {
@@ -378,8 +380,8 @@ namespace SzigoHelperConsole
         /// <returns>(int[], int) (Halmaz, mely a bemeneti tömb elemeit tartalmazza ismétlődés nélkül; A kimeneti halmazban tárolt elemek száma) (</returns>
         public static (int[], int) HalmazLetrehozasa(int[] inputArray)
         {
-            int db = 0;
             int[] a = new int[inputArray.Length];
+            int db = 0;
             a[db] = inputArray[0];
 
             for (int i = 1; i < inputArray.Length; i++)
@@ -390,7 +392,7 @@ namespace SzigoHelperConsole
                     a[db] = inputArray[i];
                 }
             }
-            return (a, db);
+            return (a, db + 1);
         }
 
         /// <summary>
@@ -401,10 +403,11 @@ namespace SzigoHelperConsole
         /// <returns></returns>
         public static bool TartalmazasVizsgalat(int[] halmaz, int ertek)
         {
-            int bal = 0, jobb = halmaz.Length;
+            int bal = 0;
+            int jobb = halmaz.Length-1;
             int center = (bal + jobb) / 2;
 
-            while (bal < jobb && halmaz[center] != ertek)
+            while (bal <= jobb && halmaz[center] != ertek)
             {
                 if (halmaz[center] > ertek)
                 {
@@ -416,7 +419,7 @@ namespace SzigoHelperConsole
                 }
                 center = (bal + jobb) / 2;
             }
-            bool van = (bal < jobb);
+            bool van = (bal <= jobb);
 
             return van;
         }
@@ -590,7 +593,7 @@ namespace SzigoHelperConsole
                 else if (halmaz1[i] > halmaz2[j])
                 {
                     darab++;
-                    yKimenetiHalmaz[darab] = halmaz1[i];
+                    yKimenetiHalmaz[darab] = halmaz2[j];
                     j++;
                 }
                 else
