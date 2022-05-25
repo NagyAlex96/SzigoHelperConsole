@@ -162,31 +162,31 @@ namespace SzigoHelperConsole
         /// <summary>
         /// Egy tömbben megkeresi a K-adik legkisebb elemet
         /// </summary>
-        /// <param name="tomb">Tömb, melybol a k-adik legkisebb elem értékét akarjuk kiválasztani</param>
+        /// <param name="inputArray">Tömb, melybol a k-adik legkisebb elem értékét akarjuk kiválasztani</param>
         /// <param name="bal">Az tömb aktuálisan vizsgált részének alsó indexe</param>
         /// <param name="jobb">Az tömb aktuálisan vizsgált részének felső indexe</param>
         /// <param name="k">A k-adik legkisebb elemet akarjuk kiválasztani a bemeneti tömbből</param>
         /// <returns>K-adik legkisebb elem értéke</returns>
-        public static int KadikLegkisebbElem(int[] tomb, int bal, int jobb, int k)
+        public static int KadikLegkisebbElem(int[] inputArray, int bal, int jobb, int k)
         {
             if (bal == jobb)
             {
-                return tomb[bal];
+                return inputArray[bal];
             }
             else
             {
-                int index = SzetValogat(ref tomb, bal, jobb);
+                int index = SzetValogat(ref inputArray, bal, jobb);
                 if (k == index - bal + 1)
                 {
-                    return tomb[index];
+                    return inputArray[index];
                 }
                 else if (k < index - bal + 1)
                 {
-                    return KadikLegkisebbElem(tomb, bal, index - 1, k);
+                    return KadikLegkisebbElem(inputArray, bal, index - 1, k);
                 }
                 else
                 {
-                    return KadikLegkisebbElem(tomb, index + 1, jobb, k - (index - bal + 1));
+                    return KadikLegkisebbElem(inputArray, index + 1, jobb, k - (index - bal + 1));
                 }
             }
         }
