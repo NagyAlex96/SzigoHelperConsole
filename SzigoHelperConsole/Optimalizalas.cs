@@ -23,8 +23,8 @@ namespace SzigoHelperConsole
             while (!van && i < inputArray[szint].Length - 1)
             {
                 i++;
-                
-                if (Fk<T>(szint, inputArray[szint][i], outputArray))
+
+                if (FkBTS<T>(szint, inputArray[szint][i], outputArray))
                 {
                     outputArray[szint] = inputArray[szint][i];
                     if (szint == inputArray.Length - 1)
@@ -46,7 +46,7 @@ namespace SzigoHelperConsole
         /// <param name="nev">Ezt az elemet hozzáadhatjuk-e az adott szinten a részeredményekhez</param>
         /// <param name="reszEredmenyek">Eddigi eredmények</param>
         /// <returns>True: a részmegoldás elfogadható az adott szinten</returns>
-        static bool Fk<T>(int szint, T nev, T[] reszEredmenyek) where T : IComparable
+        static bool FkBTS<T>(int szint, T nev, T[] reszEredmenyek) where T : IComparable //visszalépéses keresés alapesetéhez
         {
             bool ok = true;
 
@@ -59,6 +59,5 @@ namespace SzigoHelperConsole
             }
             return ok;
         }
-
     }
 }
