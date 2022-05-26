@@ -1,17 +1,65 @@
 ﻿using System;
 using System.Collections.Generic;
+using SzigoHelperConsole.BinarisFak;
 using SzigoHelperConsole.LancoltListak;
 
 namespace SzigoHelperConsole
 {
     public class Program
     {
+        public static List<Student> students = new List<Student>()
+        {
+            new Student()
+                {
+                    Name = "Trab Antal",
+                    Age = 23,
+                    Neptun = "OE3NIK"
+                },
+
+            new Student()
+                {
+                    Name = "Cserepes Virág",
+                    Age = 18,
+                    Neptun = "OE8NIK"
+                },
+
+            new Student()
+                {
+                    Name = "Major Anna",
+                    Age = 22,
+                    Neptun = "OE2NIK"
+                },
+
+            new Student()
+                {
+                    Name = "Kasza Blanka",
+                    Age = 19,
+                    Neptun = "OE9NIK"
+                },
+
+            new Student()
+                {
+                    Name = "Koaxk Ábel",
+                    Age = 24,
+                    Neptun = "OE4NIK"
+                },
+
+            new Student()
+                {
+                    Name = "Cicz Imre",
+                    Age = 20,
+                    Neptun = "OE0NIK"
+                }
+
+        };
+
         static void Main(string[] args)
         {
             //Minta1();
             //Minta2();
             //Minta3();
             //Minta4();
+            Minta5();
 
             Console.ReadKey();
         }
@@ -71,32 +119,12 @@ namespace SzigoHelperConsole
         /// </summary>
         static void Minta3()
         {
-            //egyedül a Student class helyett létre lehet hozni bármilyen saját osztályt ajánlott metódusok hozzá (ToString override-olva, GetHashCode() <-- saját logika szerint, Equals, CompareTo <-- mivel a classnak IComparable-nek kell lennie, ezért ez kötelező)
-
             EgyszeruLancoltLista<Student> lancoltLista = new EgyszeruLancoltLista<Student>();
 
-            Student studentTorlesre = new Student()
+            foreach (var item in students)
             {
-                Name = "Trab Antal",
-                Age = 23,
-                Neptun = "OE3NIK"
-            };
-
-            lancoltLista.BeszurasUtolsoElemMoge(studentTorlesre);
-
-            lancoltLista.BeszurasElsoElemEle(
-                new Student() { Name = "Cserepes Virág", Age = 18, Neptun = "OE8NIK" });
-            lancoltLista.BeszurasElsoElemEle(
-                new Student() { Name = "Major Anna", Age = 22, Neptun = "OE2NIK" });
-
-            lancoltLista.BeszurasUtolsoElemMoge(
-                new Student() { Name = "Kasza Blanka", Age = 19, Neptun = "OE9NIK" });
-
-            lancoltLista.BeszurasNedikHelyre(
-                new Student() { Name = "Koaxk Ábel", Age = 24, Neptun = "OE4NIK" }, 4);
-
-            lancoltLista.BeszurasUtolsoElemMoge(
-                new Student() { Name = "Cicz Imre", Age = 20, Neptun = "OE0NIK" });
+                lancoltLista.BeszurasUtolsoElemMoge(item);
+            }
 
 
             var a = lancoltLista.Kereses(lambad => lambad.Name == "Koaxk Ábel");
@@ -109,14 +137,13 @@ namespace SzigoHelperConsole
             lancoltLista.Bejaras();
 
 
-            lancoltLista.Torles(studentTorlesre);
+            lancoltLista.Torles(students[new Random().Next(1, 6 + 1)]);
 
 
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("\n\nTörlés után: ");
             Console.ResetColor();
             lancoltLista.Bejaras();
-            ;
         }
 
         /// <summary>
@@ -126,53 +153,6 @@ namespace SzigoHelperConsole
         {
             RendezettLancoltListak<Student> lancoltLista = new RendezettLancoltListak<Student>();
 
-            List<Student> students = new List<Student>();
-            {
-
-                students.Add(new Student()
-                {
-                    Name = "Trab Antal",
-                    Age = 23,
-                    Neptun = "OE3NIK"
-                });            
-                
-                students.Add(new Student()
-                {
-                    Name = "Cserepes Virág",
-                    Age = 18,
-                    Neptun = "OE8NIK"
-                });                
-                
-                students.Add(new Student()
-                {
-                    Name = "Major Anna",
-                    Age = 22,
-                    Neptun = "OE2NIK"
-                });                
-                
-                students.Add(new Student()
-                {
-                    Name = "Kasza Blanka",
-                    Age = 19,
-                    Neptun = "OE9NIK"
-                });               
-                
-                students.Add(new Student()
-                {
-                    Name = "Koaxk Ábel",
-                    Age = 24,
-                    Neptun = "OE4NIK"
-                });                
-                
-                students.Add(new Student()
-                {
-                    Name = "Cicz Imre",
-                    Age = 20,
-                    Neptun = "OE0NIK"
-                });
-
-            };
-
             for (int i = 0; i < students.Count; i++)
             {
                 lancoltLista.BeszurasRovidebbValtozat(students[i].Name, students[i]);
@@ -180,8 +160,29 @@ namespace SzigoHelperConsole
 
             var a = lancoltLista.Kereses("Koaxk Ábel");
 
-            ;
+            Console.WriteLine(a);
         }
 
+        /// <summary>
+        /// Minta bináris kereső fák
+        /// </summary>
+        static void Minta5()
+        {
+
+            BinarisFa<Student> binarisFa = new BinarisFa<Student>();
+
+            foreach (var item in students)
+            {
+                binarisFa.Beszuras(item.Name, item);
+            }
+
+            binarisFa.PreOrderBejaras();
+
+            binarisFa.Torles("Cserepes Virág"); //van szülője + jobb -és bal gyereke is
+
+            binarisFa.PreOrderBejaras();
+
+           
+        }
     }
 }
