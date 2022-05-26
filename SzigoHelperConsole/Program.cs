@@ -242,6 +242,7 @@ namespace SzigoHelperConsole
                 binarisFa.Beszuras(item.Number.ToString(), item);
             }
 
+            binarisFa.PreOrderBejaras();
             ;
         }
     }
