@@ -12,7 +12,7 @@ namespace SzigoHelperConsole.Assests
 
         public override string ToString()
         {
-            return $"\n A szám értéke: {this.Number}";
+            return $"Numbers class: {this.Number}";
         }
 
         public int CompareTo(object obj)
