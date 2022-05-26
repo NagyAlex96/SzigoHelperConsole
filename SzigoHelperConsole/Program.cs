@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SzigoHelperConsole.Assests;
 using SzigoHelperConsole.BinarisFak;
 using SzigoHelperConsole.LancoltListak;
 
@@ -53,13 +54,54 @@ namespace SzigoHelperConsole
 
         };
 
+        public static List<Numbers> numbers = new List<Numbers>()
+        {
+            new Numbers()
+            {
+               Number = 50
+            },
+
+            new Numbers()
+            {
+               Number = 24
+            },
+
+            new Numbers()
+            {
+               Number = 64
+            },
+
+            new Numbers()
+            {
+               Number = 12
+            },
+
+            new Numbers()
+            {
+               Number = 31
+            },
+
+            new Numbers()
+            {
+               Number = 71
+            },
+
+            new Numbers()
+            {
+               Number = 58
+            },
+
+
+        };
+
         static void Main(string[] args)
         {
             //Minta1();
             //Minta2();
             //Minta3();
             //Minta4();
-            Minta5();
+            //Minta5();
+            Minta6();
 
             Console.ReadKey();
         }
@@ -182,7 +224,25 @@ namespace SzigoHelperConsole
 
             binarisFa.PreOrderBejaras();
 
-           
+
+        }
+
+        /// <summary>
+        /// Bináris fa számokkal
+        /// </summary>
+        static void Minta6()
+        {
+            //A könyv (Algoritmusok, adatszerkezetek II.) 119.oldala alapján
+            //változtatáshoz elég a listában új elemeket létrehoznod (sorrend nem számít)
+
+            BinarisFa<Numbers> binarisFa = new BinarisFa<Numbers>();
+
+            foreach (var item in numbers)
+            {
+                binarisFa.Beszuras(item.Number.ToString(), item);
+            }
+
+            ;
         }
     }
 }
