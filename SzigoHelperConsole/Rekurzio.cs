@@ -151,13 +151,13 @@ namespace SzigoHelperConsole
         {
             if(N == 1)
             {
-                Console.WriteLine($"Mozgassuk: {N}(as/es) korongot {forras}(ról/ről), {cel}(ra/re)");
+                Console.WriteLine($"Mozgassuk: {N} számú korongot {forras}(ról/ről), {cel}(ra/re)");
                 //pszeudóban Mozgat van, Nálam kiíratás (átláthatóbb és a lényegen nem változtat)
             }
             else
             {
                 Hanoi(N - 1, forras, seged, cel);
-                Console.WriteLine($"Mozgassuk: {N}(as/es) korongot {forras}(ról/ről), {cel}(ra/re)");
+                Console.WriteLine($"Mozgassuk: {N} számú korongot {forras}(ról/ről), {cel}(ra/re)");
                 //pszeudóban Mozgat van, Nálam kiíratás (átláthatóbb és a lényegen nem változtat)
                 Hanoi(N-1, seged, cel, forras);
             }
