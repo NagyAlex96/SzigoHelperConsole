@@ -10,9 +10,8 @@ namespace SzigoHelperConsole
         {
             //Minta1();
             //Minta2();
-            Minta3();
-
-
+            //Minta3();
+            //Minta4();
 
             Console.ReadKey();
         }
@@ -119,5 +118,70 @@ namespace SzigoHelperConsole
             lancoltLista.Bejaras();
             ;
         }
+
+        /// <summary>
+        /// Minta rendezett láncolt listára
+        /// </summary>
+        static void Minta4()
+        {
+            RendezettLancoltListak<Student> lancoltLista = new RendezettLancoltListak<Student>();
+
+            List<Student> students = new List<Student>();
+            {
+
+                students.Add(new Student()
+                {
+                    Name = "Trab Antal",
+                    Age = 23,
+                    Neptun = "OE3NIK"
+                });            
+                
+                students.Add(new Student()
+                {
+                    Name = "Cserepes Virág",
+                    Age = 18,
+                    Neptun = "OE8NIK"
+                });                
+                
+                students.Add(new Student()
+                {
+                    Name = "Major Anna",
+                    Age = 22,
+                    Neptun = "OE2NIK"
+                });                
+                
+                students.Add(new Student()
+                {
+                    Name = "Kasza Blanka",
+                    Age = 19,
+                    Neptun = "OE9NIK"
+                });               
+                
+                students.Add(new Student()
+                {
+                    Name = "Koaxk Ábel",
+                    Age = 24,
+                    Neptun = "OE4NIK"
+                });                
+                
+                students.Add(new Student()
+                {
+                    Name = "Cicz Imre",
+                    Age = 20,
+                    Neptun = "OE0NIK"
+                });
+
+            };
+
+            for (int i = 0; i < students.Count; i++)
+            {
+                lancoltLista.BeszurasRovidebbValtozat(students[i].Name, students[i]);
+            }
+
+            var a = lancoltLista.Kereses("Koaxk Ábel");
+
+            ;
+        }
+
     }
 }
