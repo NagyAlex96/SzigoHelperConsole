@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SzigoHelperConsole.Assests;
 using SzigoHelperConsole.BinarisFak;
 using SzigoHelperConsole.LancoltListak;
+using SzigoHelperConsole.Szoft2.Grafok;
 
 namespace SzigoHelperConsole
 {
@@ -101,7 +102,8 @@ namespace SzigoHelperConsole
             //Minta3();
             //Minta4();
             //Minta5();
-            Minta6();
+            //Minta6();
+            Minta7();
 
             Console.ReadKey();
         }
@@ -243,6 +245,71 @@ namespace SzigoHelperConsole
             }
 
             binarisFa.PreOrderBejaras();
+            ;
+        }
+
+        /// <summary>
+        /// Gráfok
+        /// </summary>
+        static void Minta7()
+        {
+            Graf<int> graf = new GrafSzomszedsagiLista<int>();
+            Graf<int> grafDijkstra = new GrafSzomszedsagiLista<int>();
+
+            for (int i = 0; i < 7; i++)
+            {
+                graf.UjCsucs(i + 1);
+                grafDijkstra.UjCsucs(i + 1);
+            }
+            
+
+            //bejárásoknál nem mindegy, hogy milyen sorrendben vesszük fel az éleket (vagy valamit elírtam)
+            #region 184 oldal ábra /Mélységi & szélességi bejárás
+            graf.UjEl(1, 2);
+            graf.UjEl(1, 4);
+            graf.UjEl(1, 5);
+
+            graf.UjEl(2, 3);
+
+            graf.UjEl(3, 4);
+            graf.UjEl(3, 6);
+
+            graf.UjEl(4, 6);
+
+            graf.UjEl(6, 7);
+            #endregion
+
+            #region 196 oldal ábrája /Dijkstra/
+            grafDijkstra.UjEl(1, 2, 1);
+            grafDijkstra.UjEl(1, 4, 2);
+            grafDijkstra.UjEl(1, 5, 4);
+
+            grafDijkstra.UjEl(2, 3, 9);
+            grafDijkstra.UjEl(2, 4, 2);
+
+            grafDijkstra.UjEl(3, 4, 5);
+            grafDijkstra.UjEl(3, 6, 1);
+
+            grafDijkstra.UjEl(4, 6, 3);
+
+            grafDijkstra.UjEl(6, 7, 3);
+            #endregion
+
+            Console.WriteLine("Szélességi bejárás eredménye: ");
+            graf.SzelessegiBejaras(2);
+
+            Console.WriteLine("\nMélységi bejárás eredménye: ");
+            graf.MelysegiBejaras(2);
+        
+            var (lista, osszSuly) = graf.Dijkstra(2, 6);
+
+            Console.WriteLine("\nDijkstra sorrendben: ");
+            foreach (var item in lista)
+            {
+                Console.WriteLine(item);
+            }
+
+            Console.WriteLine($"Összesúly: {osszSuly}");
             ;
         }
     }
