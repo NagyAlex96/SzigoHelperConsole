@@ -115,7 +115,7 @@ namespace SzigoHelperConsole
         /// <param name="darabSzam">Véletlenszerű számok darabszáma</param>
         /// <param name="alsoHatar">Legkisebb véletlen szám</param>
         /// <param name="felsoHatar">Legnagyobb véletlen szám</param>
-        static void TombFeltoltRandom(ref int[] tomb, int darabSzam, int alsoHatar, int felsoHatar)
+        static void TombFeltoltRandom(ref int[] tomb, int darabSzam=10, int alsoHatar=1, int felsoHatar=20)
         {
             tomb = new int[darabSzam];
             Random rand = new Random();
