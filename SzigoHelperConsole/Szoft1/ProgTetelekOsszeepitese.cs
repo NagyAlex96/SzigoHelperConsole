@@ -13,7 +13,7 @@ namespace SzigoHelperConsole
         /// </summary>
         /// <param name="inputArray">Feldolgozandó tömb</param>
         /// <returns>A tömb összes elemén végrehajtott művelet utáni eredmény</returns>
-        public static int MasolasEsSorozatSzamitasOsszeEpiteseTetel(int[] inputArray)
+        public static int MasolasEsSorozatSzamitasTetel(int[] inputArray)
         {
             int ertek = 0;
 
@@ -30,7 +30,7 @@ namespace SzigoHelperConsole
         /// </summary>
         /// <param name="intputArray">Feldolgozandó tömb</param>
         /// <returns>(int, int) (max, Maxertek) </returns>
-        public static (int, int) MasolasEsMaximumKivalasztasOsszeEpiteseTetel(int[] intputArray)
+        public static (int, int) MasolasEsMaximumKivalasztasTetel(int[] intputArray)
         {
             int max = 0; //Index
             int maxErtek = (intputArray[0] * intputArray[0]);
@@ -55,7 +55,7 @@ namespace SzigoHelperConsole
         /// <param name="P">Tulajdonságfüggvény</param>
         /// <param name="k">P tulajdonságú elemek száma</param>
         /// <returns>(bool, int) (van, index) false: index == null</returns>
-        public static (bool, int?) MegszamolasEsKeresesOsszeEpiteseTetel(int[] inputArray, Func<int, bool> P, int k)
+        public static (bool, int?) MegszamolasEsKeresesTetel(int[] inputArray, Func<int, bool> P, int k)
         {
             int darabSzam = 0;
             int i = 0;
@@ -91,27 +91,27 @@ namespace SzigoHelperConsole
         /// </summary>
         /// <param name="inputArray">Feldolgozandó tömb</param>
         /// <returns>(int, int[], int) (darab, y, maxérték)</returns>
-        public static (int, int[], int) MaximumKivalasztasEsKivalogatasOsszeEpiteseTetel(int[] inputArray)
+        public static (int, int[], int) MaximumKivalasztasEsKivalogatasTetel(int[] inputArray)
         {
             int[] y = new int[inputArray.Length];
             int maxErtek = inputArray[0];
-            int darab = 1;
-            y[darab] = 1;
+            int darab = 0;
+            y[darab] = 0;
 
             for (int i = 1; i < inputArray.Length; i++)
             {
                 if (inputArray[i] > maxErtek)
                 {
                     maxErtek = inputArray[i];
-                    darab = 1;
-                    y[darab - 1] = i;
+                    darab = 0;
+                    y[darab] = i;
                 }
                 else
                 {
                     if (inputArray[i] == maxErtek)
                     {
                         darab++;
-                        y[darab] = inputArray[i];
+                        y[darab] = i;
                     }
                 }
             }
@@ -125,7 +125,7 @@ namespace SzigoHelperConsole
         /// <param name="inputArray">A feldolgozandó tömb</param>
         /// <param name="P">Tulajdonságfüggvény</param>
         /// <returns>Az tömb minden P tulajdonságú eleme között elvégezve művelet eredménye</returns>
-        public static int KivalogatasEsSorozatSzamitasOsszeEpiteseTetel(int[] inputArray, Func<int, bool> P)
+        public static int KivalogatasEsSorozatSzamitasTetel(int[] inputArray, Func<int, bool> P)
         {
             int ertek = 0;
             for (int i = 0; i < inputArray.Length; i++)
@@ -144,7 +144,7 @@ namespace SzigoHelperConsole
         /// <param name="inputArray">feldolgozandó tömb, melynek elemei összehasonlíthatók</param>
         /// <param name="P">Tulajdonságfüggvény</param>
         /// <returns>(bool, int, int) True: (van, max(index), maxÉrték), False (van, null, null) </returns>
-        public static (bool, int?, int?) KivalogatasEsMaximumKivalasztasOsszeEpiteseTetel(int[] inputArray, Func<int, bool> P)
+        public static (bool, int?, int?) KivalogatasEsMaximumKivalasztasTetel(int[] inputArray, Func<int, bool> P)
         {
             int maxErtek = int.MinValue;
             int? max = null;
@@ -176,7 +176,7 @@ namespace SzigoHelperConsole
         /// <param name="inputArray">Feldolgozandó tömb</param>
         /// <param name="P">Tulajdonságfüggvény</param>
         /// <returns>(int, int[]) (darabszám, kimenetiTömb)</returns>
-        public static (int, int[]) KivalogatasEsMasolasOsszeEpiteseTetel(int[] inputArray, Func<int, bool> P)
+        public static (int, int[]) KivalogatasEsMasolasTetel(int[] inputArray, Func<int, bool> P)
         {
             int[] y = new int[inputArray.Length];
             int darab = 0;
