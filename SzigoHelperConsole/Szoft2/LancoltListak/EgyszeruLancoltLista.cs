@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SzigoHelperConsole.LancoltListak
 {
-    public class EgyszeruLancoltLista<T> where T : class, IComparable
+    public class EgyszeruLancoltLista<TTartalom,TKulcs> 
+        where TKulcs : IComparable 
+        where TTartalom : class, IComparable, IEqualityComparer<TTartalom>
     {
-        ListaElem<T> fej;
+        ListaElem<TTartalom,TKulcs> fej;
 
         /// <summary>
         /// Legegyszerűbben megvalósítható beszúrás. Az elemek a listában a beszúrás sorrendjével ellentétes sorrendben tárolódnak
         /// </summary>
         /// <param name="ertek">Beszúrandó tartalom</param>
-        public void BeszurasElsoElemEle(T ertek)
+        public void BeszurasElsoElemEle(TTartalom ertek)
         {
-            ListaElem<T> uj = new ListaElem<T>();
+            ListaElem<TTartalom,TKulcs> uj = new ListaElem<TTartalom,TKulcs>();
 
             uj.Tartalom = ertek;
             uj.Kovetkezo = this.fej;
@@ -27,9 +26,9 @@ namespace SzigoHelperConsole.LancoltListak
         /// A lista pont ugyanabban a sorrendben tárolja az elemeket, mint ahogy azokat elhelyeztük benne
         /// </summary>
         /// <param name="ertek">Beszúrandó tartalom</param>
-        public void BeszurasUtolsoElemMoge(T ertek)
+        public void BeszurasUtolsoElemMoge(TTartalom ertek)
         {
-            ListaElem<T> uj = new ListaElem<T>();
+            ListaElem<TTartalom,TKulcs> uj = new ListaElem<TTartalom,TKulcs>();
 
             uj.Tartalom = ertek;
             uj.Kovetkezo = null;
@@ -56,9 +55,9 @@ namespace SzigoHelperConsole.LancoltListak
         /// </summary>
         /// <param name="ertek">Beszúrandó tartalom</param>
         /// <param name="N">Meghatározza a beszúrandó elem helyét</param>
-        public void BeszurasNedikHelyre(T ertek, int N)
+        public void BeszurasNedikHelyre(TTartalom ertek, int N)
         {
-            ListaElem<T> uj = new ListaElem<T>();
+            ListaElem<TTartalom,TKulcs> uj = new ListaElem<TTartalom,TKulcs>();
 
             uj.Tartalom = ertek;
 
@@ -88,7 +87,7 @@ namespace SzigoHelperConsole.LancoltListak
         /// </summary>
         public void Bejaras()
         {
-            ListaElem<T> p = fej;
+            ListaElem<TTartalom,TKulcs> p = fej;
 
             while (p != null)
             {
@@ -102,9 +101,9 @@ namespace SzigoHelperConsole.LancoltListak
         /// </summary>
         /// <param name="F">A keresési feltétel, ami megadja, hogy minek kell megfelelnie a keresett elem tartalmának</param>
         /// <returns>(Bool, T class) (True: van ilyen elem, T class-nak a ToString metódusa)</returns>
-        public (bool, T) Kereses(Func<T, bool> F)
+        public (bool, TTartalom) Kereses(Func<TTartalom, bool> F)
         {
-            ListaElem<T> p = this.fej;
+            ListaElem<TTartalom,TKulcs> p = this.fej;
 
             while (p != null && !F(p.Tartalom))
             {
@@ -128,10 +127,10 @@ namespace SzigoHelperConsole.LancoltListak
         /// </summary>
         /// <param name="torlendo">Törlendő érték</param>
         /// <exception cref="Exception">A törlendő érték nem szerepel a listában</exception>
-        public void Torles(T torlendo)
+        public void Torles(TTartalom torlendo)
         {
-            ListaElem<T> p = this.fej;
-            ListaElem<T> e = null;
+            ListaElem<TTartalom,TKulcs> p = this.fej;
+            ListaElem<TTartalom,TKulcs> e = null;
 
             while (p != null && !p.Tartalom.Equals(torlendo))
             {

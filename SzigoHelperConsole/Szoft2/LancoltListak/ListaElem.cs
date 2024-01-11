@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SzigoHelperConsole.LancoltListak
 {
-    public class ListaElem<T> where T : class, IComparable
+    public class ListaElem<TTartalom, TKulcs> 
+        where TKulcs : IComparable 
+        where TTartalom : class, IComparable, IEqualityComparer<TTartalom>
     {
-        public T Tartalom { get; set; }
+        public TTartalom Tartalom { get; set; }
 
-        public string Kulcs { get; set; }
+        public TKulcs Kulcs { get; set; }
 
-        public ListaElem<T> Kovetkezo { get; set; }
+        public ListaElem<TTartalom, TKulcs> Kovetkezo { get; set; }
     }
 }

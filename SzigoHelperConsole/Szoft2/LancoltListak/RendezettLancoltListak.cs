@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SzigoHelperConsole.LancoltListak
 {
-    public class RendezettLancoltListak<T> where T : class, IComparable
+    public class RendezettLancoltListak<TTartalom, TKulcs> 
+        where TKulcs : IComparable
+        where TTartalom : class, IComparable, IEqualityComparer<TTartalom>
     {
-        ListaElem<T> fej;
+        ListaElem<TTartalom,TKulcs> fej;
 
-        public void BeszurasHosszabbValtozat(string kulcs, T ertek)
+        public void BeszurasHosszabbValtozat(TKulcs kulcs, TTartalom ertek)
         {
-            ListaElem<T> uj = new ListaElem<T>();
+            ListaElem<TTartalom,TKulcs> uj = new ListaElem<TTartalom,TKulcs>();
 
             uj.Kulcs = kulcs;
             uj.Tartalom = ertek;
@@ -24,17 +23,17 @@ namespace SzigoHelperConsole.LancoltListak
             }
             else
             {
-                if (string.Compare(this.fej.Kulcs, kulcs) > 0) //első elem elé
+                if (this.fej.Kulcs.CompareTo(kulcs) > 0) //első elem elé
                 {
                     uj.Kovetkezo = this.fej;
                     this.fej = uj;
                 }
                 else
                 {
-                    ListaElem<T> p = this.fej;
-                    ListaElem<T> e = null;
+                    ListaElem<TTartalom,TKulcs> p = this.fej;
+                    ListaElem<TTartalom,TKulcs> e = null;
 
-                    while (p != null && string.Compare(p.Kulcs, kulcs) < 0)
+                    while (p != null && p.Kulcs.CompareTo(kulcs) < 0)
                     {
                         e = p;
                         p = p.Kovetkezo;
@@ -55,17 +54,17 @@ namespace SzigoHelperConsole.LancoltListak
 
         }
 
-        public void BeszurasRovidebbValtozat(string kulcs, T ertek)
+        public void BeszurasRovidebbValtozat(TKulcs kulcs, TTartalom ertek)
         {
-            ListaElem<T> uj = new ListaElem<T>();
+            ListaElem<TTartalom,TKulcs> uj = new ListaElem<TTartalom,TKulcs>();
 
             uj.Kulcs = kulcs;
             uj.Tartalom = ertek;
 
-            ListaElem<T> p = fej;
-            ListaElem<T> e = null;
+            ListaElem<TTartalom,TKulcs> p = fej;
+            ListaElem<TTartalom,TKulcs> e = null;
 
-            while (p != null && string.Compare(p.Kulcs, kulcs) < 0)
+            while (p != null && p.Kulcs.CompareTo(kulcs) < 0)
             {
                 e = p;
                 p = p.Kovetkezo;
@@ -83,16 +82,16 @@ namespace SzigoHelperConsole.LancoltListak
             }
         }
 
-        public (bool, T) Kereses(string keresettKulcs)
+        public (bool, TTartalom) Kereses(TKulcs keresettKulcs)
         {
-            ListaElem<T> p = fej;
+            ListaElem<TTartalom,TKulcs> p = fej;
 
-            while (p != null && string.Compare(p.Kulcs, keresettKulcs) < 0)
+            while (p != null && p.Kulcs.CompareTo(keresettKulcs) < 0)
             {
                 p = p.Kovetkezo;
             }
 
-            bool van = p != null && (string.Compare(p.Kulcs, keresettKulcs) == 0);
+            bool van = p != null && (p.Kulcs.CompareTo(keresettKulcs) == 0);
 
             if (van)
             {
