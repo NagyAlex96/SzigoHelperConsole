@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SzigoHelperConsole.BinarisFak
 {
-    public class BinarisFa<T> where T : class, IComparable
+    public class BinarisFa<TTartalom, TKulcs>
+        where TKulcs : IComparable
+        where TTartalom : class, IComparable
     {
-        TreeItem<T> root;
+        TreeItem<TTartalom, TKulcs> root;
 
         public void PreOrderBejaras()
         {
@@ -17,7 +15,7 @@ namespace SzigoHelperConsole.BinarisFak
             Console.ResetColor();
             PreOrderSeged(this.root);
         }
-        private void PreOrderSeged(TreeItem<T> p)
+        private void PreOrderSeged(TreeItem<TTartalom, TKulcs> p)
         {
             if (p != null)
             {
@@ -34,7 +32,7 @@ namespace SzigoHelperConsole.BinarisFak
             Console.ResetColor();
             InOrderSeged(this.root);
         }
-        private void InOrderSeged(TreeItem<T> p)
+        private void InOrderSeged(TreeItem<TTartalom, TKulcs> p)
         {
             if (p != null)
             {
@@ -51,7 +49,7 @@ namespace SzigoHelperConsole.BinarisFak
             Console.ResetColor();
             PostOrderSeged(this.root);
         }
-        private void PostOrderSeged(TreeItem<T> p)
+        private void PostOrderSeged(TreeItem<TTartalom, TKulcs> p)
         {
             if (p != null)
             {
@@ -61,21 +59,21 @@ namespace SzigoHelperConsole.BinarisFak
             }
         }
 
-        public T Kereses(string kulcs)
+        public TTartalom Kereses(TKulcs kulcs)
         {
             return KeresesSeged(ref this.root, kulcs);
         }
-        private T KeresesSeged(ref TreeItem<T> p, string kulcs)
+        private TTartalom KeresesSeged(ref TreeItem<TTartalom, TKulcs> p, TKulcs kulcs)
         {
             if (p != null)
             {
-                if (string.Compare(p.Kulcs, kulcs) > 0)
+                if (p.Kulcs.CompareTo(kulcs) > 0)
                 {
                     KeresesSeged(ref p.Left, kulcs);
                 }
                 else
                 {
-                    if (string.Compare(p.Kulcs, kulcs) < 0)
+                    if (p.Kulcs.CompareTo(kulcs) < 0)
                     {
                         KeresesSeged(ref p.Right, kulcs);
                     }
@@ -93,15 +91,15 @@ namespace SzigoHelperConsole.BinarisFak
             return null;
         }
 
-        public void Beszuras(string kulcs, T ertek)
+        public void Beszuras(TKulcs kulcs, TTartalom ertek)
         {
             BeszurasSeged(ref this.root, kulcs, ertek);
         }
-        private void BeszurasSeged(ref TreeItem<T> p, string kulcs, T ertek)
+        private void BeszurasSeged(ref TreeItem<TTartalom,TKulcs> p, TKulcs kulcs, TTartalom ertek)
         {
             if (p == null)
             {
-                p = new TreeItem<T>();
+                p = new TreeItem<TTartalom,TKulcs>();
                 p.Kulcs = kulcs;
                 p.Tartalom = ertek;
                 p.Left = null;
@@ -109,13 +107,13 @@ namespace SzigoHelperConsole.BinarisFak
             }
             else
             {
-                if (string.Compare(p.Kulcs, kulcs) > 0)
+                if (p.Kulcs.CompareTo(kulcs)>0)
                 {
                     BeszurasSeged(ref p.Left, kulcs, ertek);
                 }
                 else
                 {
-                    if (string.Compare(p.Kulcs, kulcs) < 0)
+                    if (p.Kulcs.CompareTo(kulcs) < 0)
                     {
 
                         BeszurasSeged(ref p.Right, kulcs, ertek);
@@ -129,15 +127,15 @@ namespace SzigoHelperConsole.BinarisFak
 
         }
 
-        public void Torles(string kulcs)
+        public void Torles(TKulcs kulcs)
         {
             TorlesSeged(ref this.root, kulcs);
         }
-        private void TorlesSeged(ref TreeItem<T> p, string kulcs)
+        private void TorlesSeged(ref TreeItem<TTartalom, TKulcs> p, TKulcs kulcs)
         {
             if (p != null)
             {
-                if (string.Compare(p.Kulcs, kulcs) > 0)
+                if (p.Kulcs.CompareTo(kulcs) > 0)
                 {
                     TorlesSeged(ref p.Left, kulcs);
                 }
@@ -169,7 +167,7 @@ namespace SzigoHelperConsole.BinarisFak
                 throw new Exception("Nincs ilyen kulcs");
             }
         }
-        private void TorlesKetGyerek(TreeItem<T> e, ref TreeItem<T> r)
+        private void TorlesKetGyerek(TreeItem<TTartalom, TKulcs> e, ref TreeItem<TTartalom, TKulcs> r)
         {
             if (r.Right != null)
             {

@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SzigoHelperConsole.BinarisFak
 {
-    public class TreeItem<T> where T : class, IComparable
+    public class TreeItem<TTartalom, TKulcs>
+        where TKulcs : IComparable
+        where TTartalom : class, IComparable
     {
-        public string Kulcs { get; set; }
+        public TKulcs Kulcs { get; set; }
 
-        public T Tartalom;
+        public TTartalom Tartalom;
 
-        public TreeItem<T> Left;
+        public TreeItem<TTartalom, TKulcs> Left;
 
-        public TreeItem<T> Right;
+        public TreeItem<TTartalom, TKulcs> Right;
 
         public override string ToString()
         {
