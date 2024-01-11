@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SzigoHelperConsole.Szoft2.Grafok
 {
     public abstract class Graf<T>
-    {
+    {     
         protected abstract int CsucsokSzama { get; }
 
         protected class El
