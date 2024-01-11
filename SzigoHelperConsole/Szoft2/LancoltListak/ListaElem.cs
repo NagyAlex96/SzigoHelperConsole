@@ -5,7 +5,7 @@ namespace SzigoHelperConsole.LancoltListak
 {
     public class ListaElem<TTartalom, TKulcs> 
         where TKulcs : IComparable 
-        where TTartalom : class, IComparable, IEqualityComparer<TTartalom>
+        where TTartalom : class, IComparable
     {
         public TTartalom Tartalom { get; set; }
 
