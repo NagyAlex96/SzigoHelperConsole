@@ -69,13 +69,13 @@ namespace SzigoHelperConsole.BinarisFak
             {
                 if (p.Kulcs.CompareTo(kulcs) > 0)
                 {
-                    KeresesSeged(ref p.Left, kulcs);
+                    return KeresesSeged(ref p.Left, kulcs);
                 }
                 else
                 {
                     if (p.Kulcs.CompareTo(kulcs) < 0)
                     {
-                        KeresesSeged(ref p.Right, kulcs);
+                        return KeresesSeged(ref p.Right, kulcs);
                     }
                     else
                     {
