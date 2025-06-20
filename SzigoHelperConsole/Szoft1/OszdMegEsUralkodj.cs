@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace SzigoHelperConsole
         /// <param name="bal">Az aktuálisan vizsgált résztömb első elemének indexe</param>
         /// <param name="jobb">Az aktuálisan vizsgált résztömb utolsó elemének indexe</param>
         /// <returns>Legnagyobb elem indexe</returns>
-        public static int MaximumFelezoKereses(int[] inputArray, int bal, int jobb)
+        public static int MaximumFelezoKereses<T>(T[] inputArray, int bal, int jobb) where T : IComparable
         {
             if (bal == jobb)
             {
@@ -27,7 +28,7 @@ namespace SzigoHelperConsole
                 int balmax = MaximumFelezoKereses(inputArray, bal, center);
                 int jobbmax = MaximumFelezoKereses(inputArray, center + 1, jobb);
 
-                if (inputArray[balmax] > inputArray[jobbmax])
+                if (inputArray[balmax].CompareTo(inputArray[jobbmax]) > 0)
                 {
                     return balmax;
                 }
@@ -44,7 +45,7 @@ namespace SzigoHelperConsole
         /// <param name="inputArray">Rendezendő tömb, mely az algoritmus végére rendezetté válik</param>
         /// <param name="bal">A tömb éppen rendezés alatt lévő részének alsó indexe</param>
         /// <param name="jobb">A tömb éppen rendezés alatt lévő részének felső indexe</param>
-        public static void OsszefesuloRendezes(ref int[] inputArray, int bal, int jobb)
+        public static void OsszefesuloRendezes<T>(ref T[] inputArray, int bal, int jobb) where T : IComparable
         {
             if (bal < jobb)
             {
@@ -62,31 +63,31 @@ namespace SzigoHelperConsole
         /// <param name="bal">A tömb összefésülendő résztömbjének kezdő indexe</param>
         /// <param name="center">Index, amely megadja, hogy a két rendezett résztömbnek hol van a határa</param>
         /// <param name="jobb">A tömb összefésülendő résztömbjének záró indexe</param>
-        static void Osszefesul(ref int[] inputArray, int bal, int center, int jobb)
+        static void Osszefesul<T>(ref T[] inputArray, int bal, int center, int jobb) where T : IComparable
         {
             int y1Lenght = center - bal + 1;
             int y2Lenght = jobb - center;
-            int[] y1 = new int[y1Lenght + 1];
+            T[] y1 = new T[y1Lenght + 1];
 
             for (int i = 0; i < y1Lenght; i++)
             {
                 y1[i] = inputArray[bal + i];
             }
 
-            int[] y2 = new int[y2Lenght + 1];
+            T[] y2 = new T[y2Lenght + 1];
 
             for (int j = 0; j < y2Lenght; j++)
             {
                 y2[j] = inputArray[center + j + 1];
             }
 
-            y1[y1Lenght] = int.MaxValue;
-            y2[y2Lenght] = int.MaxValue;
+            y1[y1Lenght] = y1.Max();
+            y2[y2Lenght] = y2.Max();
             int x = 0, y = 0;
 
             for (int k = bal; k <= jobb; k++)
             {
-                if (y1[x] < y2[y])
+                if (y1[x].CompareTo(y2[y]) < 0)
                 {
                     inputArray[k] = y1[x];
                     x++;
@@ -106,7 +107,7 @@ namespace SzigoHelperConsole
         /// <param name="inputArray">Rendezendő tömb, mely az algoritmus végére rendezetté válik</param>
         /// <param name="bal">A tömb éppen rendezés alatt lévő részének alsó indexe</param>
         /// <param name="jobb">A tömb éppen rendezés alatt lévő részének felső indexe</param>
-        public static void GyorsRendezes(ref int[] inputArray, int bal, int jobb)
+        public static void GyorsRendezes<T>(ref T[] inputArray, int bal, int jobb) where T : IComparable
         {
             int index = SzetValogat(ref inputArray, bal, jobb);
 
@@ -119,7 +120,7 @@ namespace SzigoHelperConsole
             {
                 GyorsRendezes(ref inputArray, index + 1, jobb);
             }
-            ;
+
         }
 
         /// <summary>
@@ -129,13 +130,13 @@ namespace SzigoHelperConsole
         /// <param name="bal">Kezdetben az bemeneti tömb éppen vizsgált résztömbjének alsó indexe, majd a bejárást segítő változó</param>
         /// <param name="jobb">Kezdetben az bemeneti tömb éppen vizsgált résztömbjének felső indexe, majd a bejárást segítő változó</param>
         /// <returns>Az eltárolt segédváltozó helye a függvény végén. Az idx-nél kisebb indexű elemek mind kisebbek vagy egyenlők a segéd-del, míg az idx-nél nagyobb indexű elemek mind nagyobbak a segéd-nél</returns>
-        static int SzetValogat(ref int[] inputArray, int bal, int jobb)
+        static int SzetValogat<T>(ref T[] inputArray, int bal, int jobb) where T : IComparable
         {
-            int seged = inputArray[bal];
+            T seged = inputArray[bal];
 
             while (bal < jobb)
             {
-                while (bal < jobb && inputArray[jobb] > seged)
+                while (bal < jobb && inputArray[jobb].CompareTo(seged) > 0)
                 {
                     jobb--;
                 }
@@ -143,7 +144,7 @@ namespace SzigoHelperConsole
                 {
                     inputArray[bal] = inputArray[jobb];
                     bal++;
-                    while (bal < jobb && inputArray[bal] < seged)
+                    while (bal < jobb && inputArray[bal].CompareTo(seged) < 0)
                     {
                         bal++;
                     }
@@ -167,7 +168,7 @@ namespace SzigoHelperConsole
         /// <param name="jobb">Az tömb aktuálisan vizsgált részének felső indexe</param>
         /// <param name="k">A k-adik legkisebb elemet akarjuk kiválasztani a bemeneti tömbből</param>
         /// <returns>K-adik legkisebb elem értéke</returns>
-        public static int KadikLegkisebbElem(int[] inputArray, int bal, int jobb, int k)
+        public static T KadikLegkisebbElem<T>(T[] inputArray, int bal, int jobb, int k) where T : IComparable
         {
             if (bal == jobb)
             {

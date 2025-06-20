@@ -55,14 +55,14 @@ namespace SzigoHelperConsole
         /// <param name="P">Tulajdonságfüggvény</param>
         /// <param name="k">P tulajdonságú elemek száma</param>
         /// <returns>(bool, int) (van, index) false: index == null</returns>
-        public static (bool, int?) MegszamolasEsKeresesTetel(int[] inputArray, Func<int, bool> P, int k)
+        public static (bool, int?) MegszamolasEsKeresesTetel<T>(T[] inputArray, Func<T, bool> P, int k)
         {
             int darabSzam = 0;
             int i = 0;
 
             while (i < inputArray.Length && darabSzam < k)
             {
-                if (P(i))
+                if (P(inputArray[i]))
                 {
                     darabSzam++;
                 }
@@ -85,33 +85,33 @@ namespace SzigoHelperConsole
 
         }
 
-
         /// <summary>
         /// Az összes legnagyobb értékű elem index értékeinek kiválogatása, egy másik tömbbe
         /// </summary>
         /// <param name="inputArray">Feldolgozandó tömb</param>
         /// <returns>(int, int[], int) (darab, y, maxérték)</returns>
-        public static (int, int[], int) MaximumKivalasztasEsKivalogatasTetel(int[] inputArray)
+        public static (int, T[], T) MaximumKivalasztasEsKivalogatasTetel<T>(T[] inputArray)
+            where T : IComparable
         {
-            int[] y = new int[inputArray.Length];
-            int maxErtek = inputArray[0];
+            T[] y = new T[inputArray.Length];
+            T maxErtek = inputArray[0];
             int darab = 0;
-            y[darab] = 0;
+            y[darab] = y[0];
 
             for (int i = 1; i < inputArray.Length; i++)
             {
-                if (inputArray[i] > maxErtek)
+                if (inputArray[i].CompareTo(maxErtek) > 0)
                 {
                     maxErtek = inputArray[i];
                     darab = 0;
-                    y[darab] = i;
+                    y[darab] = y[i];
                 }
                 else
                 {
-                    if (inputArray[i] == maxErtek)
+                    if (inputArray[i].CompareTo(maxErtek) == 0)
                     {
                         darab++;
-                        y[darab] = i;
+                        y[darab] = y[i];
                     }
                 }
             }
@@ -125,14 +125,14 @@ namespace SzigoHelperConsole
         /// <param name="inputArray">A feldolgozandó tömb</param>
         /// <param name="P">Tulajdonságfüggvény</param>
         /// <returns>Az tömb minden P tulajdonságú eleme között elvégezve művelet eredménye</returns>
-        public static int KivalogatasEsSorozatSzamitasTetel(int[] inputArray, Func<int, bool> P)
+        public static int KivalogatasEsSorozatSzamitasTetel<T>(T[] inputArray, Func<T, bool> P)
         {
             int ertek = 0;
             for (int i = 0; i < inputArray.Length; i++)
             {
-                if (P(i))
+                if (P(inputArray[i]))
                 {
-                    ertek += (inputArray[i] * inputArray[i]);
+                    ertek += (inputArray[i].GetHashCode() * inputArray[i].GetHashCode());
                 }
             }
             return ertek;
@@ -143,22 +143,23 @@ namespace SzigoHelperConsole
         /// </summary>
         /// <param name="inputArray">feldolgozandó tömb, melynek elemei összehasonlíthatók</param>
         /// <param name="P">Tulajdonságfüggvény</param>
-        /// <returns>(bool, int, int) True: (van, max(index), maxÉrték), False (van, null, null) </returns>
-        public static (bool, int?, int?) KivalogatasEsMaximumKivalasztasTetel(int[] inputArray, Func<int, bool> P)
+        /// <returns>(bool, int, int) True: (van, max(index), maxÉrték), False (van, null, null <--> Default(T)) </returns>
+        public static (bool, int?, T?) KivalogatasEsMaximumKivalasztasTetel<T>(T[] inputArray, Func<T, bool> P)
+            where T : IComparable
         {
-            int maxErtek = int.MinValue;
+            T maxErtek = default(T);
             int? max = null;
 
             for (int i = 0; i < inputArray.Length; i++)
             {
-                if (P(i) && inputArray[i] > maxErtek)
+                if (P(inputArray[i]) && inputArray[i].CompareTo(maxErtek) > 0)
                 {
                     maxErtek = inputArray[i];
                     max = i;
                 }
             }
 
-            bool van = (maxErtek > int.MinValue);
+            bool van = (max != null ? true: false);
 
             if (van)
             {
@@ -166,7 +167,7 @@ namespace SzigoHelperConsole
             }
             else
             {
-                return (van, null, null);
+                return (van, null, default(T));
             }
         }
 
@@ -176,16 +177,16 @@ namespace SzigoHelperConsole
         /// <param name="inputArray">Feldolgozandó tömb</param>
         /// <param name="P">Tulajdonságfüggvény</param>
         /// <returns>(int, int[]) (darabszám, kimenetiTömb)</returns>
-        public static (int, int[]) KivalogatasEsMasolasTetel(int[] inputArray, Func<int, bool> P)
+        public static (int, T[]) KivalogatasEsMasolasTetel<T>(T[] inputArray, Func<T, bool> P)
         {
-            int[] y = new int[inputArray.Length];
+            T[] y = new T[inputArray.Length];
             int darab = 0;
 
             for (int i = 0; i < inputArray.Length; i++)
             {
-                if (P(i))
+                if (P(inputArray[i]))
                 {
-                    y[darab] = inputArray[i] * inputArray[i];
+                    y[darab] = (dynamic)inputArray[i] * inputArray[i]; //TODO stringre tesztelés
                     darab++;
                 }
             }

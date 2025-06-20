@@ -4,6 +4,14 @@ namespace SzigoHelperConsole
 {
     public class EgyszeruProgTetelek
     {
+        /*
+        példa meghívása:
+            
+        int[] array = { 1, 2, 3, 4, 5, 6, 7 };
+        bool van = EgyszeruProgTetelek.EldontesTetel(array, x => x % 5 == 0); //keressük meg
+
+         */
+
         /// <summary>
         /// Egy tömb összes eleme között elvégez egy műveletet. Jelenleg <c>összeadást</c>
         /// </summary>

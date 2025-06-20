@@ -30,7 +30,7 @@ namespace SzigoHelperConsole
         /// </summary>
         /// <param name="N">Természetes szám, amelynek faktoriálisát meg szeretnék határozni</param>
         /// <returns>N! értéke</returns>
-        public static int FaktorialisRekurzivTetel(int N)
+        public static Int64 FaktorialisRekurzivTetel(int N)
         {
             if (N == 0)
             {
@@ -188,7 +188,7 @@ namespace SzigoHelperConsole
         /// <param name="bal">A bemeneti tömbnek a bal indexű elemétől az utolsó eleméig tartó résztömböt dolgozza fel</param>
         /// <param name="P">Logikai értéket visszaadó tulajdonságfüggvény</param>
         /// <returns></returns>
-        public static int? LinearisKeresesRekurzivTetel(int[] inputArray, int bal, Func<int, bool> P)
+        public static int? LinearisKeresesRekurzivTetel<T>(T[] inputArray, int bal, Func<T, bool> P) where T : IComparable
         {
             if (bal >= inputArray.Length)
             {
@@ -196,7 +196,7 @@ namespace SzigoHelperConsole
             }
             else
             {
-                if (P(bal))
+                if (P(inputArray[bal]))
                 {
                     return bal;
                 }
@@ -214,7 +214,7 @@ namespace SzigoHelperConsole
         /// <param name="jobb">A tömbnek az első elemétől a jobb indexű eleméig tartó résztömböt dolgozza fel</param>
         /// <param name="P">Logikai értéket visszaadó tulajdonság függvény</param>
         /// <returns>P tulajdonságú elemek darabszáma</returns>
-        public static int MegszamlalasRekurzivTetel(int[] inputArray, int jobb, Func<int, bool> P)
+        public static int MegszamlalasRekurzivTetel<T>(T[] inputArray, int jobb, Func<T, bool> P)
         {
             if (jobb == -1)
             {
@@ -222,7 +222,7 @@ namespace SzigoHelperConsole
             }
             else
             {
-                if (P(jobb))
+                if (P(inputArray[jobb]))
                 {
                     return 1 + MegszamlalasRekurzivTetel(inputArray, jobb - 1, P);
                 }
@@ -239,7 +239,8 @@ namespace SzigoHelperConsole
         /// <param name="inputArray">A feldolgozandó tömb</param>
         /// <param name="jobb">A tömbnek az első elemétől a jobb indexű eleméig tartó résztömböt dolgozza fel</param>
         /// <returns>Maximális értékű elem indexe</returns>
-        public static int MaximumKivalasztasRekurzivTetel(int[] inputArray, int jobb)
+        public static int MaximumKivalasztasRekurzivTetel<T>(T[] inputArray, int jobb)
+            where T : IComparable
         {
             if (jobb == 0)
             {
@@ -248,7 +249,7 @@ namespace SzigoHelperConsole
             else
             {
                 int max = MaximumKivalasztasRekurzivTetel(inputArray, jobb - 1);
-                if (inputArray[jobb] > inputArray[max])
+                if (inputArray[jobb].CompareTo(inputArray[max]) > 0)
                 {
                     return jobb;
                 }

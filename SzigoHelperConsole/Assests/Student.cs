@@ -15,12 +15,12 @@ namespace SzigoHelperConsole.LancoltListak
 
         public override string ToString()
         {
-            return $"\nNév: {Name} \nNeptunkód: {Neptun} \nÉletkora: {Age}";
+            return $"\nNév: {Name}\nNeptunkód: {Neptun}\nÉletkora: {Age}";
         }
 
         public int CompareTo(object obj)
         {
-            return Name.CompareTo((obj as Student).Neptun);
+            return Name.CompareTo((obj as Student).Name);
         }
 
         //saját magunk is kitalálhatunk egy logikát

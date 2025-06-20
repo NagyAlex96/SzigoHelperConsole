@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SzigoHelperConsole.Assests;
 
 namespace SzigoHelperConsole
 {
@@ -13,13 +14,13 @@ namespace SzigoHelperConsole
         /// </summary>
         /// <param name="inputArray">Feldolgozandó tömb</param>
         /// <returns>Bementi tömb elemeinek 2x értéke</returns>
-        public static int[] MasolasTetel(int[] inputArray)
+        public static T[] MasolasTetel<T>(T[] inputArray)
         {
-            int[] yKimenetiTomb = new int[inputArray.Length];
+            T[] yKimenetiTomb = new T[inputArray.Length];
 
             for (int i = 0; i < inputArray.Length; i++)
             {
-                yKimenetiTomb[i] = inputArray[i] * 2;
+                yKimenetiTomb[i] = inputArray[i];
             }
 
             return yKimenetiTomb;
@@ -31,14 +32,14 @@ namespace SzigoHelperConsole
         /// <param name="inputArray">Vizsgált tömb</param>
         /// <param name="P">Kiválogatási feltétel</param>
         /// <returns>(Darabszám, tömb)</returns>
-        public static (int, int[]) KivalogatasTetel(int[] inputArray, Func<int, bool> P)
+        public static (int, T[]) KivalogatasTetel<T>(T[] inputArray, Func<T, bool> P)
         {
-            int[] y = new int[inputArray.Length];
+            T[] y = new T[inputArray.Length];
             int darab = 0;
 
             for (int i = 0; i < inputArray.Length; i++)
             {
-                if (P(i))
+                if (P(inputArray[i]))
                 {
                     y[darab] = inputArray[i];
                     darab++;
@@ -54,13 +55,13 @@ namespace SzigoHelperConsole
         /// <param name="inputArray">A vizsgált tömb</param>
         /// <param name="P">Kiválogatási feltétel</param>
         /// <returns>A kiválogatást követően a bementi tömbben található elemek száma</returns>
-        public static int KivalogatasHelybenTetel(ref int[] inputArray, Func<int, bool> P)
+        public static int KivalogatasHelybenTetel<T>(ref T[] inputArray, Func<T, bool> P)
         {
             int darab = 0;
 
             for (int i = 0; i < inputArray.Length; i++)
             {
-                if (P(i))
+                if (P(inputArray[i]))
                 {
                     inputArray[darab] = inputArray[i];
                     darab++;
@@ -76,14 +77,14 @@ namespace SzigoHelperConsole
         /// <param name="tomb">A vizsgált tömb</param>
         /// <param name="P">Kiválogatási feltétel</param>
         /// <returns>A kiválogatást követően a bementi tömbben található elemek száma</returns>
-        public static int KivalogatasHelybenCserevelTetel(ref int[] tomb, Func<int, bool> P)
+        public static int KivalogatasHelybenCserevelTetel<T>(ref T[] tomb, Func<T, bool> P)
         {
             int darab = 0;
             for (int i = 0; i < tomb.Length; i++)
             {
-                if (P(i))
+                if (P(tomb[i]))
                 {
-                    var temp = tomb[darab];
+                    T temp = tomb[darab];
                     tomb[darab] = tomb[i];
                     tomb[i] = temp;
                     darab++;
@@ -98,17 +99,17 @@ namespace SzigoHelperConsole
         /// <param name="inputArray">A vizsgált tömb</param>
         /// <param name="P">Szétválogatási feltétel</param>
         /// <returns>(int[], int, int[], int) Y1 tömb, db1, Y2 tömb, db2</returns>
-        public static (int[], int, int[], int) SzetvalogatasTetel(int[] inputArray, Func<int, bool> P)
+        public static (T[], int, T[], int) SzetvalogatasTetel<T>(T[] inputArray, Func<T, bool> P)
         {
             int darab1 = 0;
-            int[] y1 = new int[inputArray.Length];
+            T[] y1 = new T[inputArray.Length];
 
-            int[] y2 = new int[inputArray.Length];
+            T[] y2 = new T[inputArray.Length];
             int darab2 = 0;
 
             for (int i = 0; i < inputArray.Length; i++)
             {
-                if (P(i))
+                if (P(inputArray[i]))
                 {
                     y1[darab1] = inputArray[i];
                     darab1++;
@@ -129,15 +130,15 @@ namespace SzigoHelperConsole
         /// <param name="inputArray">A vizsgált tömb</param>
         /// <param name="P">Szétválogatási feltétel</param>
         /// <returns>(int[], int, int[], int) Y1 tömb, db1</returns>
-        public static (int[], int) SzetvalogatasEgyTombben(int[] inputArray, Func<int, bool> P)
+        public static (T[], int) SzetvalogatasEgyTombben<T>(T[] inputArray, Func<T, bool> P)
         {
-            int[] y = new int[inputArray.Length];
+            T[] y = new T[inputArray.Length];
             int jobb = inputArray.Length - 1;
             int darab = 0;
 
             for (int i = 0; i < inputArray.Length; i++)
             {
-                if (P(i))
+                if (P(inputArray[i]))
                 {
                     y[darab] = inputArray[i];
                     darab++;
@@ -158,16 +159,15 @@ namespace SzigoHelperConsole
         /// <param name="inputArray">Feldolgozandó tömb</param>
         /// <param name="P">Logikai értéku tulajdonság függvény</param>
         /// <returns>A P tulajdonságú elemek száma a tömbben</returns>
-        public static int SzetvalogatasHelybenCsereNelkul(ref int[] inputArray, Func<int, bool> P)
+        public static int SzetvalogatasHelybenCsereNelkul<T>(ref T[] inputArray, Func<T, bool> P)
         {
-
             int bal = 0;
             int jobb = inputArray.Length - 1;
-            int seged = inputArray[0];
+            T seged = inputArray[0];
 
             while (bal < jobb)
             {
-                while (bal < jobb && !P(jobb))
+                while (bal < jobb && !P(inputArray[jobb]))
                 {
                     jobb--;
                 }
@@ -175,7 +175,7 @@ namespace SzigoHelperConsole
                 {
                     inputArray[bal] = inputArray[jobb];
                     bal++;
-                    while (bal < jobb && P(bal))
+                    while (bal < jobb && P(inputArray[bal]))
                     {
                         bal++;
                     }
@@ -191,7 +191,7 @@ namespace SzigoHelperConsole
             inputArray[bal] = seged;
             int darab = 0;
 
-            if (P(bal))
+            if (P(inputArray[bal]))
             {
                 darab = bal + 1;
             }
@@ -209,16 +209,16 @@ namespace SzigoHelperConsole
         /// <param name="inputArrayA">Egyik bemeneti tömb</param>
         /// <param name="inputArrayB">Másik bemeneti tömb</param>
         /// <returns>(int[], int) (Kimeneti tömb, releváns elemek száma)</returns>
-        public static (int[], int) MetszetTetel(int[] inputArrayA, int[] inputArrayB)
+        public static (T[], int) MetszetTetel<T>(T[] inputArrayA, T[] inputArrayB) where T : IComparable
         {
-            int[] y = new int[inputArrayA.Length];
+            T[] y = new T[inputArrayA.Length];
             int darab = 0;
 
             for (int i = 0; i < y.Length; i++)
             {
                 int j = 0;
 
-                while (j < inputArrayB.Length && inputArrayA[i] != inputArrayB[j])
+                while (j < inputArrayB.Length && inputArrayA[i].CompareTo(inputArrayB[j]) != 0)
                 {
                     j++;
                 }
@@ -239,7 +239,7 @@ namespace SzigoHelperConsole
         /// <param name="inputArrayA">Egyik bemeneti tömb</param>
         /// <param name="inputArrayB">Másik bemeneti tömb</param>
         /// <returns>True: van közös elem</returns>
-        public static bool MetszetKozosElemVizsalataTetel(int[] inputArrayA, int[] inputArrayB)
+        public static bool MetszetKozosElemVizsalataTetel<T>(T[] inputArrayA, T[] inputArrayB) where T : IComparable
         {
             bool van = false;
             int i = 0;
@@ -249,7 +249,7 @@ namespace SzigoHelperConsole
 
                 int j = 0;
 
-                while (j < inputArrayB.Length && inputArrayA[i] != inputArrayB[j])
+                while (j < inputArrayB.Length && inputArrayA[i].CompareTo(inputArrayB[j]) != 0)
                 {
                     j++;
                 }
@@ -272,9 +272,9 @@ namespace SzigoHelperConsole
         /// <param name="inputArrayA">Egyik bemeneti tömb</param>
         /// <param name="inputArrayB">Másik bemeneti tömb</param>
         /// <returns>(int[], int) (Kimeneti tömb, releváns elemek száma)</returns>
-        public static (int[], int) UnioTetel(int[] inputArrayA, int[] inputArrayB)
+        public static (T[], int) UnioTetel<T>(T[] inputArrayA, T[] inputArrayB) where T : IComparable
         {
-            int[] y = new int[inputArrayA.Length + inputArrayB.Length];
+            T[] y = new T[inputArrayA.Length + inputArrayB.Length];
 
             for (int i = 0; i < inputArrayA.Length; i++)
             {
@@ -286,7 +286,7 @@ namespace SzigoHelperConsole
             for (int j = 0; j < inputArrayB.Length; j++)
             {
                 int i = 0;
-                while (i < inputArrayA.Length && inputArrayA[i] != inputArrayB[j])
+                while (i < inputArrayA.Length && inputArrayA[i].CompareTo(inputArrayB[j]) != 0)
                 {
                     i++;
                 }
@@ -304,14 +304,14 @@ namespace SzigoHelperConsole
         /// </summary>
         /// <param name="inputArray">Tömb, melyet az algoritmus úgy alakít, hogy az ismétlődő elemekből pontosan egy maradjon</param>
         /// <returns>Az tömbben az átalakítást követően megmaradó elemek száma</returns>
-        public static int IsmetlodesekKiszureseTetel(ref int[] inputArray)
+        public static int IsmetlodesekKiszureseTetel<T>(ref T[] inputArray) where T : IComparable
         {
             int darab = 1;
 
             for (int i = 1; i < inputArray.Length; i++)
             {
                 int j = 0;
-                while (j <= darab && inputArray[i] != inputArray[j])
+                while (j <= darab && inputArray[i].CompareTo(inputArray[j]) != 0)
                 {
                     j++;
                 }
@@ -330,23 +330,23 @@ namespace SzigoHelperConsole
         /// <param name="inputArrayA">Egyik rendezett bemeneti tömb</param>
         /// <param name="inputArrayB">Másik rendezett bemeneti tömb</param>
         /// <returns>(int[], int)  (rendezett kimeneti tömb, releváns elemek száma)</returns>
-        public static (int[], int) OsszeFuttatasTetel(int[] inputArrayA, int[] inputArrayB)
+        public static (T[], int) OsszeFuttatasTetel<T>(T[] inputArrayA, T[] inputArrayB) where T : IComparable
         {
-            int[] y = new int[inputArrayA.Length + inputArrayB.Length];
+            T[] y = new T[inputArrayA.Length + inputArrayB.Length];
             int i = 0;
             int j = 0;
             int darab = 0;
 
             while (i < inputArrayA.Length && j < inputArrayB.Length)
             {
-                if (inputArrayA[i] < inputArrayB[j])
+                if (inputArrayA[i].CompareTo(inputArrayB[j]) < 0)
                 {
                     y[darab] = inputArrayA[i];
                     i++;
                 }
                 else
                 {
-                    if (inputArrayA[i] > inputArrayB[j])
+                    if (inputArrayA[i].CompareTo(inputArrayB[j]) > 0)
                     {
                         y[darab] = inputArrayB[j];
                         j++;
@@ -384,16 +384,16 @@ namespace SzigoHelperConsole
         /// <param name="inputArrayA">Egyik rendezett bemeneti tömb</param>
         /// <param name="inputArrayB">Másik rendezett bemeneti tömb</param>
         /// <returns>(int[], int)  (rendezett kimeneti tömb, releváns elemek száma)</returns>
-        public static (int[], int) ModositottOsszeFuttatasTetel(int[] inputArrayA, int[] inputArrayB)
+        public static (T[], int) ModositottOsszeFuttatasTetel<T>(T[] inputArrayA, T[] inputArrayB) where T : IComparable
         {
-            int[] yKimenetiTomb = new int[inputArrayA.Length + inputArrayB.Length];
+            T[] yKimenetiTomb = new T[inputArrayA.Length + inputArrayB.Length];
 
-            Array.Resize<int>(ref inputArrayA, inputArrayA.Length + 1);
-            Array.Resize<int>(ref inputArrayB, inputArrayB.Length + 1); //ez a két sor csak azért szükséges, hogy a végtelen-t el tudjuk tárolni
+            Array.Resize<T>(ref inputArrayA, inputArrayA.Length + 1);
+            Array.Resize<T>(ref inputArrayB, inputArrayB.Length + 1); //ez a két sor csak azért szükséges, hogy a végtelen-t el tudjuk tárolni
             //listával nyilván egyszerűbb
 
-            inputArrayA[inputArrayA.Length - 1] = int.MaxValue;
-            inputArrayB[inputArrayB.Length - 1] = int.MaxValue;
+            inputArrayA[inputArrayA.Length - 1] = inputArrayA.Max();
+            inputArrayB[inputArrayB.Length - 1] = inputArrayB.Max();
 
             int i = 0;
             int j = 0;
@@ -401,12 +401,12 @@ namespace SzigoHelperConsole
 
             while (i < inputArrayA.Length - 1 || j < inputArrayB.Length - 1)
             {
-                if (inputArrayA[i] < inputArrayB[j])
+                if (inputArrayA[i].CompareTo(inputArrayB[j]) < 0)
                 {
                     yKimenetiTomb[darab] = inputArrayA[i];
                     i++;
                 }
-                else if (inputArrayA[i] > inputArrayB[j])
+                else if (inputArrayA[i].CompareTo(inputArrayB[j]) > 0)
                 {
                     yKimenetiTomb[darab] = inputArrayB[j];
                     j++;
@@ -422,6 +422,5 @@ namespace SzigoHelperConsole
 
             return (yKimenetiTomb, darab);
         }
-
     }
 }

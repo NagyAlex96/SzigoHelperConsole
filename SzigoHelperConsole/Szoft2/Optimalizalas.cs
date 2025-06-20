@@ -20,7 +20,7 @@ namespace SzigoHelperConsole
         {
             int i = -1;
 
-            while (!van && i < inputArray[szint].Length - 1)
+            while (i < inputArray[szint].Length - 1 && !van)
             {
                 i++;
 
