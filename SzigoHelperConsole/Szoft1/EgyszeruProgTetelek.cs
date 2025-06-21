@@ -74,7 +74,7 @@ namespace SzigoHelperConsole
         /// <param name="inputArray">Vizsgált tömb</param>
         /// <param name="P">Az első P tulajdonságú tömbelem indexe</param>
         /// <returns>True + index: ha van adott tulajdonságú elem. Index (null) amennyiben nincs ilyen elem</returns>
-        public static (bool, int?) LinearisKeresesTetel<T>(T[] inputArray, Func<T, bool> P)
+        public static (bool van, int? idx) LinearisKeresesTetel<T>(T[] inputArray, Func<T, bool> P)
         {
 
             int i = 0;
