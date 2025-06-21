@@ -1,16 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Net;
-using System.Reflection.Metadata.Ecma335;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
 using SzigoHelperConsole.Assests;
-using SzigoHelperConsole.BinarisFak;
 using SzigoHelperConsole.LancoltListak;
-using SzigoHelperConsole.Szoft2.Grafok;
 
 namespace SzigoHelperConsole
 {
@@ -103,6 +95,7 @@ namespace SzigoHelperConsole
 
         static void Main(string[] args)
         {
+            //TODO: nem lett mindenre tesztelve
             //Minta2();
             Rekurzio.Hanoi(3, "A", "C", "B");
 

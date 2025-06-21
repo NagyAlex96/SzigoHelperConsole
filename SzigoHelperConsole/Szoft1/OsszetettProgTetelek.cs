@@ -6,9 +6,9 @@ namespace SzigoHelperConsole
     public class OsszetettProgTetelek
     {
         /* PL: Kiválogatás tételnél
-         * a pLogikaiTulajdonság olyan, mintha azt mondanám, hogy válogassuk ki a páros elemejet, ami if-ben így nézne ki:ó
+         * a pLogikaiTulajdonság olyan, mintha azt mondanám, hogy válogassuk ki a páros elemeket, ami if-ben így nézne ki:
          * if (bemenetiTomb[i] % 2 == 0)
-         * jelen esetben ezt lambdával adjuk meg, tehát, meghívásnál: EgyszeruProgTetelek.EldontesTetel(array, x => x % 2 == 0);
+         * jelen esetben ezt lambdával adjuk meg, tehát, meghívásnál: OsszetettProgTetelek.KivalogatasTetel(array, x => x % 2 == 0);
          * ahol az x egy integer lesz
          * bővebben érteni akarod, akkor nézz utána egy hivatalos doksiban --> vagy ChatGPT
          * 
