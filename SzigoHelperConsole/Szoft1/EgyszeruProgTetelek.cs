@@ -4,12 +4,13 @@ namespace SzigoHelperConsole
 {
     public class EgyszeruProgTetelek
     {
-        /*
-        példa meghívása:
-            
-        int[] array = { 1, 2, 3, 4, 5, 6, 7 };
-        bool van = EgyszeruProgTetelek.EldontesTetel(array, x => x % 5 == 0); //keressük meg
-
+        /* PL: Eldöntés tételnél
+         * a pLogikaiTulajdonság olyan, mintha azt mondanám, hogy keressük meg az első páros elemet, ami while-ban így nézne ki:
+         * while (i < bemenetiTomb.Length && !bemenetiTomb[i] % 2 == 0)
+         * 
+         * jelen esetben ezt lambdával adjuk meg, tehát, meghívásnál: EgyszeruProgTetelek.EldontesTetel(array, x => x % 2 == 0);
+         * ahol az x egy integer lesz
+         * ha bővebben érteni akarod, akkor nézz utána egy hivatalos doksiban --> vagy ChatGPT    
          */
 
         /// <summary>
@@ -43,7 +44,6 @@ namespace SzigoHelperConsole
             {
                 i++;
             }
-
 
             bool van = i < bemenetiTomb.Length;
 
