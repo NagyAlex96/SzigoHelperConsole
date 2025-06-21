@@ -15,15 +15,15 @@ namespace SzigoHelperConsole
         /// <summary>
         /// Egy tömb összes eleme között elvégez egy műveletet. Jelenleg <c>összeadást</c>
         /// </summary>
-        /// <param name="inputArray">Vizsgált tömb</param>
+        /// <param name="bemenetiTomb">Vizsgált tömb</param>
         /// <returns>Az adott műveletnek (+) a tömb összes elemére történő alkalmazását követően előálló eredmény</returns>
-        public static int SorozatSzamitasTetel(int[] inputArray)
+        public static int SorozatSzamitasTetel(int[] bemenetiTomb)
         {
             int ertek = 0;
 
-            for (int i = 0; i < inputArray.Length; i++)
+            for (int i = 0; i < bemenetiTomb.Length; i++)
             {
-                ertek += inputArray[i];
+                ertek += bemenetiTomb[i];
             }
 
             return ertek;
@@ -32,20 +32,20 @@ namespace SzigoHelperConsole
         /// <summary>
         /// El akarjuk dönteni, hogy egy tömbben van-e legalább egy adott tulajdonságú elem
         /// </summary>
-        /// <param name="inputArray">Vizsgált tömb</param>
-        /// <param name="P">Tulajdonság függvény, amely minden T típusú érték esetén igaz vagy hamis értéket ad vissza</param>
+        /// <param name="bemenetiTomb">Vizsgált tömb</param>
+        /// <param name="pLogikaiTulajdonsag">Tulajdonság függvény, amely minden T típusú érték esetén igaz vagy hamis értéket ad vissza</param>
         /// <returns><c>True</c>: ha van P tulajdonságú elem a tömbben</returns>
-        public static bool EldontesTetel<T>(T[] inputArray, Func<T, bool> P)
+        public static bool EldontesTetel<T>(T[] bemenetiTomb, Func<T, bool> pLogikaiTulajdonsag)
         {
             int i = 0;
 
-            while (i < inputArray.Length && !P(inputArray[i]))
+            while (i < bemenetiTomb.Length && !pLogikaiTulajdonsag(bemenetiTomb[i]))
             {
                 i++;
             }
 
 
-            bool van = i < inputArray.Length;
+            bool van = i < bemenetiTomb.Length;
 
             return van;
         }
@@ -53,13 +53,13 @@ namespace SzigoHelperConsole
         /// <summary>
         /// Feltételezzük, hogy a tömbben egy adott elem mindenképpen előfordul
         /// </summary>
-        /// <param name="inputArray">Vizsgált tömb</param>
-        /// <param name="P">Tulajdonság függvény, amely minden T típusú érték esetén igaz vagy hamis értéket ad vissza</param>
+        /// <param name="bemenetiTomb">Vizsgált tömb</param>
+        /// <param name="pLogikaiTulajdonsag">Tulajdonság függvény, amely minden T típusú érték esetén igaz vagy hamis értéket ad vissza</param>
         /// <returns>Az első P tulajdonságú tömbelem indexe</returns>
-        public static int KivalasztasTetel<T>(T[] inputArray, Func<T, bool> P)
+        public static int KivalasztasTetel<T>(T[] bemenetiTomb, Func<T, bool> pLogikaiTulajdonsag)
         {
             int i = 0;
-            while (!P(inputArray[i]))
+            while (!pLogikaiTulajdonsag(bemenetiTomb[i]))
             {
                 i++;
             }
@@ -71,19 +71,19 @@ namespace SzigoHelperConsole
         /// <summary>
         /// Egy tömbben van-e valamilyen tulajdonságú elem, és ha van, akkor hol található az első ilyen.
         /// </summary>
-        /// <param name="inputArray">Vizsgált tömb</param>
-        /// <param name="P">Az első P tulajdonságú tömbelem indexe</param>
+        /// <param name="bemenetiTomb">Vizsgált tömb</param>
+        /// <param name="pLogikaiTulajdonsag">Az első P tulajdonságú tömbelem indexe</param>
         /// <returns>True + index: ha van adott tulajdonságú elem. Index (null) amennyiben nincs ilyen elem</returns>
-        public static (bool van, int? idx) LinearisKeresesTetel<T>(T[] inputArray, Func<T, bool> P)
+        public static (bool van, int? idx) LinearisKeresesTetel<T>(T[] bemenetiTomb, Func<T, bool> pLogikaiTulajdonsag)
         {
 
             int i = 0;
-            while (i < inputArray.Length && !P(inputArray[i]))
+            while (i < bemenetiTomb.Length && !pLogikaiTulajdonsag(bemenetiTomb[i]))
             {
                 i++;
             }
 
-            bool van = i < inputArray.Length;
+            bool van = i < bemenetiTomb.Length;
             if (van)
             {
                 int index = i;
@@ -98,15 +98,15 @@ namespace SzigoHelperConsole
         /// <summary>
         /// Egy tömbben szeretnénk adott tulajdonságú elemek számát meghatározni
         /// </summary>
-        /// <param name="inputArray">Feldolgozandó tömb</param>
-        /// <param name="P">Keresési feltétel</param>
+        /// <param name="bemenetiTomb">Feldolgozandó tömb</param>
+        /// <param name="pLogikaiTulajdonsag">Keresési feltétel</param>
         /// <returns>P tulajdonságú elemek darabszáma</returns>
-        public static int MegszamlalasTetel<T>(T[] inputArray, Func<T, bool> P)
+        public static int MegszamlalasTetel<T>(T[] bemenetiTomb, Func<T, bool> pLogikaiTulajdonsag)
         {
             int darabSzam = 0;
-            for (int i = 0; i < inputArray.Length; i++)
+            for (int i = 0; i < bemenetiTomb.Length; i++)
             {
-                if (P(inputArray[i]))
+                if (pLogikaiTulajdonsag(bemenetiTomb[i]))
                 {
                     darabSzam++;
                 }
@@ -118,15 +118,15 @@ namespace SzigoHelperConsole
         /// <summary>
         /// Adott egy tömb, amelyben az elemek összehasonlíthatók és megkeressük a legnagyobb elemet
         /// </summary>
-        /// <param name="inputArray">Legalább 1 elemu tömb, melyben a legnagyobb elemet keressük</param>
+        /// <param name="bemenetiTomb">Legalább 1 elemu tömb, melyben a legnagyobb elemet keressük</param>
         /// <returns>Legnagyobb értékű elem indexe</returns>
-        public static int MaximumKivalasztas<T>(T[] inputArray) where T : IComparable
+        public static int MaximumKivalasztas<T>(T[] bemenetiTomb) where T : IComparable
         {
             int maxIndex = 0;
 
-            for (int i = 1; i < inputArray.Length; i++)
+            for (int i = 1; i < bemenetiTomb.Length; i++)
             {
-                if (inputArray[maxIndex].CompareTo(inputArray[i]) < 0) // relációs jel megfordításával minimumkiválasztás érhető el
+                if (bemenetiTomb[maxIndex].CompareTo(bemenetiTomb[i]) < 0) // relációs jel megfordításával minimumkiválasztás érhető el
                 {
                     maxIndex = i;
                 }
