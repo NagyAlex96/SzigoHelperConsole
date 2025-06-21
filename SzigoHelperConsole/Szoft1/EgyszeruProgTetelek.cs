@@ -135,5 +135,4 @@ namespace SzigoHelperConsole
             return maxIndex;
         }
     }
-
 }
